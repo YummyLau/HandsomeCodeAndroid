@@ -1,0 +1,17 @@
+/**
+ *  versions.gradle 用于定义全局使用的依赖版本
+ **/
+ext.deps = [:]
+def versions = [:]
+versions.android_gradle_plugin = "3.1.0"
+versions.support = "27.0.2"
+
+
+
+def support = [:]
+support.v4 = "com.android.support:support-v4:$versions.support"
+ext.deps.support = support
+
+
+
+ext.deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
