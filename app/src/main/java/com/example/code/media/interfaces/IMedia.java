@@ -1,4 +1,4 @@
-package com.example.code.media;
+package com.example.code.media.interfaces;
 
 /**
  * 多媒体接口
