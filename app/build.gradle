@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.example.code"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -27,4 +27,7 @@ dependencies {
     "$androidTestImplementation" 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     "$api" deps.support.v4
+    "$api" deps.support.palette
+
+    "$api" deps.glide
 }
