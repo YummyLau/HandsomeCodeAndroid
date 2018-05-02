@@ -1,4 +1,4 @@
-package com.example.code.image;
+package com.example.code.glide;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +18,7 @@ import com.bumptech.glide.load.resource.gif.GifOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.example.code.image.interfaces.IImageLoader;
+import com.example.code.glide.interfaces.IImageLoader;
 import com.example.code.util.system.ActivityUtils;
 
 /**

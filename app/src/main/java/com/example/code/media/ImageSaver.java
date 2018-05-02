@@ -1,6 +1,8 @@
 package com.example.code.media;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -8,7 +10,9 @@ import android.util.Log;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
+import com.bumptech.glide.request.Request;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.code.media.interfaces.IMedia;
@@ -58,6 +62,15 @@ public class ImageSaver {
             Log.e(TAG, "#saveImage media'path is empty!");
             return;
         }
+        Glide.with(context)
+                .asBitmap()
+                .load(media.getPath())
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+
+                    }
+                });
 //
 //        try {
 //            RequestManager requestManager = Glide.with(context);

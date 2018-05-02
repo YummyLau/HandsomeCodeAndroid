@@ -448,4 +448,8 @@ public class FileUtils {
         return content;
     }
 
+    public static void copy(String fileName,byte[] bytes){
+
+    }
+
 }

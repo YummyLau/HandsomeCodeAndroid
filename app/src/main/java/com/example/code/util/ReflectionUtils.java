@@ -58,6 +58,13 @@ public class ReflectionUtils {
         return null;
     }
 
+    /**
+     * 调用field#set 方法是，传递的值应该装箱类型，比如32，应该为new Integer(32)
+     *
+     * @param obj
+     * @param fieldName
+     * @param value
+     */
     public static void setFieldValue(Object obj, String fieldName, Object value) {
         if (obj == null || TextUtils.isEmpty(fieldName)) {
             return;

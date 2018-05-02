@@ -1,17 +1,14 @@
-package com.example.code.image.transformation;
+package com.example.code.glide.transformations;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.Transformation;
-import com.bumptech.glide.load.engine.Resource;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
-import com.bumptech.glide.load.resource.bitmap.BitmapResource;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.util.Util;
 
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 
 /**
@@ -19,50 +16,47 @@ import java.security.MessageDigest;
  * Created by yummyLau on 2018/4/26.
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
+ * https://muyangmin.github.io/glide-docs-cn/doc/transformations.html
  */
-public class BlurTransformation implements Transformation<Bitmap> {
+public class BlurTransformation extends BitmapTransformation {
 
     private static final String TAG = BlurTransformation.class.getSimpleName();
 
     private static final String ID = BlurTransformation.class.getSimpleName();
     private static final byte[] ID_BYTES = ID.getBytes(CHARSET);
 
-    private BitmapPool bitmapPool;
     private int radius;
 
-    public BlurTransformation(Context context, int radius) {
-        this.bitmapPool = Glide.get(context).getBitmapPool();
+    public BlurTransformation(int radius) {
         this.radius = radius;
     }
 
-    @NonNull
     @Override
-    public Resource<Bitmap> transform(@NonNull Context context, @NonNull Resource<Bitmap> resource, int outWidth, int outHeight) {
-        Bitmap source = resource.get();
-        try {
-            Bitmap bitmap = ThumbnailUtils.extractThumbnail(source, (int) (outWidth * 0.3f), (int) (outHeight * 0.3f));
-            return BitmapResource.obtain(fastBlur(bitmap, radius), bitmapPool);
-
-        } catch (Exception e) {
-            Log.e(TAG, "#transform error!");
-        }
-        return BitmapResource.obtain(source, bitmapPool);
+    protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
+        return fastBlur(ThumbnailUtils.extractThumbnail(toTransform, (int) (outWidth * 0.3f), (int) (outHeight * 0.3f)), radius);
     }
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof BlurTransformation;
+        if (o instanceof BlurTransformation) {
+            BlurTransformation other = (BlurTransformation) o;
+            return radius == other.radius;
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
-        return ID.hashCode();
+        return Util.hashCode(ID.hashCode(), Util.hashCode(radius));
     }
 
 
     @Override
     public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
         messageDigest.update(ID_BYTES);
+
+        byte[] radiusData = ByteBuffer.allocate(4).putInt(radius).array();
+        messageDigest.update(radiusData);
     }
 
     private Bitmap fastBlur(Bitmap sentBitmap, int radius) {

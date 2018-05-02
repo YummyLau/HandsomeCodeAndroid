@@ -4,7 +4,9 @@ import android.os.SystemClock;
 import android.view.View;
 
 /**
- * created by yummyLau on 2018/4/13
+ * Created by yummyLau on 2018/4/26.
+ * Email: yummyl.lau@gmail.com
+ * blog: yummylau.com
  */
 public abstract class DoubleClickListener implements View.OnClickListener {
 

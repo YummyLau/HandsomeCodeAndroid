@@ -1,4 +1,4 @@
-package com.example.code.image.interfaces;
+package com.example.code.glide.interfaces;
 
 import android.content.Context;
 import android.graphics.Bitmap;
