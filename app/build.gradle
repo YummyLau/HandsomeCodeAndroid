@@ -29,5 +29,8 @@ dependencies {
     "$api" deps.support.v4
     "$api" deps.support.palette
 
+    "$api" deps.room.runtime
+    "$api" deps.room.compiler
+
     "$api" deps.glide
 }

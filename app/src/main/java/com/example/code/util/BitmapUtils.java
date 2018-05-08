@@ -1,19 +1,28 @@
 package com.example.code.util;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RawRes;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by yummyLau on 2018/4/15.
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
+ * 图片的格式参考 https://developer.android.com/guide/topics/media/media-formats
  */
 
 public class BitmapUtils {
@@ -22,6 +31,7 @@ public class BitmapUtils {
 
     /**
      * 伸缩成具体的格式
+     *
      * @param bitmap
      * @param width
      * @param height
@@ -37,19 +47,21 @@ public class BitmapUtils {
 
     /**
      * 按照一定的倍数缩小
+     *
      * @param originBitmap
      * @param scaleRatio
      * @return
      */
-    public static Bitmap scaleBitmap(@NonNull Bitmap originBitmap, float scaleRatio){
-        return  Bitmap.createScaledBitmap(originBitmap,
-                (int)(originBitmap.getWidth() / scaleRatio),
-                (int)(originBitmap.getHeight() / scaleRatio),
+    public static Bitmap scaleBitmap(@NonNull Bitmap originBitmap, float scaleRatio) {
+        return Bitmap.createScaledBitmap(originBitmap,
+                (int) (originBitmap.getWidth() / scaleRatio),
+                (int) (originBitmap.getHeight() / scaleRatio),
                 false);
     }
 
     /**
      * 旋转图片
+     *
      * @param bitmap
      * @param rotate
      * @return
@@ -69,6 +81,7 @@ public class BitmapUtils {
 
     /**
      * 转化成字节数字
+     *
      * @param bmp
      * @param needRecycle
      * @return
@@ -96,6 +109,7 @@ public class BitmapUtils {
     /**
      * 高斯模糊，大图片选择先缩放，部分图片canReuseInBitmap设置为ture会异常，原因是bitmap不可变，设置为false即可
      * radius 一般为 8，缩小图片一般为10
+     *
      * @param sentBitmap
      * @param radius
      * @param canReuseInBitmap
@@ -393,4 +407,56 @@ public class BitmapUtils {
         Bitmap src = BitmapFactory.decodeFile(pathName, options);
         return createScaleBitmap(src, reqWidth, reqHeight, options.inSampleSize);
     }
+
+    public static InputStream getInputStreamByFileName(@NonNull String fileName) throws FileNotFoundException {
+        return new FileInputStream(fileName);
+    }
+
+    public static InputStream getInputStreamByDrawable(Context context, @RawRes int drawableRes) throws Resources.NotFoundException {
+        return context.getResources().openRawResource(drawableRes);
+    }
+
+    public static InputStream getInputStreamByAssets(Context context, @NonNull String fileName) throws IOException {
+        return context.getResources().getAssets().open(fileName);
+    }
+
+    public static InputStream getInputStreamByUri(Context context, @NonNull Uri uri) throws FileNotFoundException {
+        return context.getContentResolver().openInputStream(uri);
+    }
+
+    @Nullable
+    public static Bitmap inputStream2Bitmap(@NonNull InputStream inputStream) {
+        Bitmap bitmap = null;
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            //设置inJustDecodeBounds为true表示只获取大小，不生成Btimap
+            options.inJustDecodeBounds = true;
+            //解析图片大小
+            BitmapFactory.decodeStream(inputStream, null, options);
+
+            int width = options.outWidth;
+            int height = options.outHeight;
+
+            //如果宽度大于高度，交换宽度和高度
+            if (width > height) {
+                int temp = width;
+                width = height;
+                height = temp;
+            }
+
+            //计算取样比例
+            int sampleRatio = Math.max(width / 900, height / 1600);
+            //定义图片解码选项
+            options.inSampleSize = sampleRatio;
+
+            //读取图片，并将图片缩放到指定的目标大小
+            bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+            inputStream.close();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+
+        }
+        return bitmap;
+    }
+
 }
