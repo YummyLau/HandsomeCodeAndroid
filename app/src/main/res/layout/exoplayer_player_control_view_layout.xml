@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 顶部返回，音量等信息 -->
+    <RelativeLayout
+        android:id="@+id/top_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/top_back"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_7.5"
+            android:src="@drawable/exoplayer_control_back_icon" />
+
+        <ImageView
+            android:id="@+id/top_volume"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_5"
+            android:layout_marginTop="@dimen/dp_7.5"
+            android:src="@drawable/exoplayer_control_volume_icon" />
+    </RelativeLayout>
+
+
+    <!-- 底部进度条控制 -->
+    <RelativeLayout
+        android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/bottom_play"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_40"
+            android:layout_centerVertical="true"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10"
+            android:src="@drawable/exo_controls_play" />
+
+        <TextView
+            android:id="@+id/bottom_current_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/bottom_play"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:minWidth="@dimen/dp_30"
+            android:text="00:00"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_10" />
+
+        <ImageView
+            android:id="@+id/bottom_control_fullscreen"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_40"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10"
+            android:src="@drawable/exo_controls_fullscreen_enter" />
+
+        <TextView
+            android:id="@+id/bottom_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/bottom_control_fullscreen"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:minWidth="@dimen/dp_30"
+            android:text="00:00"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_10" />
+
+        <SeekBar
+            android:id="@+id/bottom_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_5"
+            android:layout_toLeftOf="@+id/bottom_duration"
+            android:layout_toRightOf="@+id/bottom_current_position"
+            android:background="@null"
+            android:max="100"
+            android:maxHeight="@dimen/dp_3"
+            android:minHeight="@dimen/dp_3"
+            android:progress="0"
+            android:progressDrawable="@drawable/exoplayer_control_process_bg"
+            android:secondaryProgress="0"
+            android:thumb="@drawable/exoplayer_control_process_oval_bg"
+            android:thumbOffset="0dip" />
+
+    </RelativeLayout>
+
+    <!-- 中间状态 -->
+    <RelativeLayout
+        android:id="@+id/mid_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/mid_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/exoplayer_control_loading_icon" />
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/mid_status_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mid_status"
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/sp_15"
+            android:visibility="gone"
+            tools:text="视频加载失败"
+            tools:visibility="visible" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

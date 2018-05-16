@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/control_gesture"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/volume_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/volume_img"
+            android:layout_width="@dimen/dp_53"
+            android:layout_height="@dimen/dp_53"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/exoplayer_gesture_volume_icon" />
+
+        <SeekBar
+            android:id="@+id/volume_progress"
+            android:layout_width="@dimen/dp_105"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/volume_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@null"
+            android:max="100"
+            android:maxHeight="@dimen/dp_3"
+            android:minHeight="@dimen/dp_3"
+            android:progress="0"
+            android:progressDrawable="@drawable/exoplayer_gesture_process_bg"
+            android:thumb="@null"
+            android:thumbOffset="0dip" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bright_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/bright_img"
+            android:layout_width="@dimen/dp_53"
+            android:layout_height="@dimen/dp_53"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/exoplayer_gesture_bright_icon" />
+
+        <SeekBar
+            android:id="@+id/bright_progress"
+            android:layout_width="@dimen/dp_105"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bright_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@null"
+            android:max="100"
+            android:maxHeight="@dimen/dp_3"
+            android:minHeight="@dimen/dp_3"
+            android:progress="0"
+            android:progressDrawable="@drawable/exoplayer_gesture_process_bg"
+            android:thumb="@null"
+            android:thumbOffset="0dip" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/progress_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/progress_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_16" />
+
+        <SeekBar
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:background="@null"
+            android:max="100"
+            android:maxHeight="@dimen/dp_2"
+            android:minHeight="@dimen/dp_2"
+            android:minWidth="@dimen/dp_105"
+            android:paddingBottom="@dimen/dp_2"
+            android:paddingTop="@dimen/dp_2"
+            android:progress="0"
+            android:progressDrawable="@drawable/exoplayer_gesture_process_bg"
+            android:thumb="@null"
+            android:thumbOffset="0dip" />
+
+    </LinearLayout>
+
+</RelativeLayout>

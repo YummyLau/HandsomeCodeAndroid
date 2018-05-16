@@ -7,6 +7,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 
 /**
  * Created by yummyLau on 2018/4/26.
@@ -26,6 +27,7 @@ public class UserEntity {
     public static final String COL_CREATE_TIME = "create_time";
 
     @PrimaryKey
+    @NonNull
     @ColumnInfo(name = COL_ID)
     public String id;
 
