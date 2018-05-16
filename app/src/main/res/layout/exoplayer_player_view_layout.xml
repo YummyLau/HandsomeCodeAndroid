@@ -11,4 +11,14 @@
         app:resize_mode="fixed_width"
         app:surface_type="texture_view" />
 
+    <com.example.code.exoplayer.view.PlayerControlView
+        android:id="@+id/player_control_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.example.code.exoplayer.view.PlayerGestureView
+        android:id="@+id/player_gesture_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </FrameLayout>

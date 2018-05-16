@@ -1,9 +1,9 @@
-package com.example.code.exoplayer.callback;
+package com.example.code.exoplayer.interfaces.callback;
 
 import com.example.code.exoplayer.annotations.VideoStatus;
 
 /**
- * 视频状态回调
+ * 播放器暴露状态回调
  * Created by yummyLau on 2018/5/15.
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com

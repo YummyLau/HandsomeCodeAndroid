@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.code.R;
+import com.example.code.exoplayer.interfaces.support.IControlAction;
 
 /**
  * 控制层View
@@ -20,9 +21,12 @@ import com.example.code.R;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public class PlayerControlView extends FrameLayout {
+public class PlayerControlView extends FrameLayout implements View.OnClickListener {
 
     private Context mContext;
+
+    private View coverLayout;
+    private ImageView cover;
 
     private View topLayout;
     private ImageView back;
@@ -39,6 +43,8 @@ public class PlayerControlView extends FrameLayout {
     private ImageView status;
     private TextView statusTip;
 
+    private IControlAction mIControlAction;
+
 
     public PlayerControlView(@NonNull Context context) {
         this(context, null);
@@ -52,10 +58,14 @@ public class PlayerControlView extends FrameLayout {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
         initView(attrs, defStyleAttr);
+        initListener();
     }
 
     private void initView(AttributeSet attrs, int defStyleAttr) {
         View root = LayoutInflater.from(mContext).inflate(R.layout.exoplayer_player_control_view_layout, this, true);
+
+        coverLayout = root.findViewById(R.id.cover_layout);
+        cover = root.findViewById(R.id.cover);
 
         topLayout = root.findViewById(R.id.top_layout);
         back = root.findViewById(R.id.top_back);
@@ -71,5 +81,38 @@ public class PlayerControlView extends FrameLayout {
         midLayout = root.findViewById(R.id.mid_layout);
         status = root.findViewById(R.id.mid_status);
         statusTip = root.findViewById(R.id.mid_status_tip);
+    }
+
+    public void setControlAction(IControlAction IControlAction) {
+        mIControlAction = IControlAction;
+    }
+
+    private void initListener() {
+        back.setOnClickListener(this);
+        volume.setOnClickListener(this);
+        play.setOnClickListener(this);
+        controlFullscreen.setOnClickListener(this);
+        status.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.top_back: {
+                break;
+            }
+            case R.id.top_volume: {
+                break;
+            }
+            case R.id.bottom_play: {
+                break;
+            }
+            case R.id.bottom_control_fullscreen: {
+                break;
+            }
+            case R.id.mid_status: {
+                break;
+            }
+        }
     }
 }

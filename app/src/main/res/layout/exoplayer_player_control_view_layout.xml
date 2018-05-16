@@ -5,6 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- 封面信息 -->
+    <RelativeLayout
+        android:id="@+id/cover_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
     <!-- 顶部返回，音量等信息 -->
     <RelativeLayout
         android:id="@+id/top_layout"
@@ -28,7 +41,6 @@
             android:layout_marginTop="@dimen/dp_7.5"
             android:src="@drawable/exoplayer_control_volume_icon" />
     </RelativeLayout>
-
 
     <!-- 底部进度条控制 -->
     <RelativeLayout
@@ -124,11 +136,11 @@
             android:src="@drawable/exoplayer_control_loading_icon" />
 
         <TextView
-            android:layout_centerHorizontal="true"
             android:id="@+id/mid_status_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/mid_status"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_10"
             android:gravity="center"
             android:textColor="@android:color/black"

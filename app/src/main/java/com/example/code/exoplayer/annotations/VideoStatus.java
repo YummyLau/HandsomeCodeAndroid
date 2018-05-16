@@ -12,9 +12,10 @@ import android.support.annotation.IntDef;
  * blog: yummylau.com
  */
 
-@IntDef({VideoStatus.PREPARE, VideoStatus.BUFFERING, VideoStatus.PLAYING,
+@IntDef({VideoStatus.NONE, VideoStatus.PREPARE, VideoStatus.BUFFERING, VideoStatus.PLAYING,
         VideoStatus.PAUSE, VideoStatus.FINISHED, VideoStatus.ERROR})
 public @interface VideoStatus {
+    int NONE = -1;
     int PREPARE = 1;
     int BUFFERING = 2;
     int PLAYING = 3;
