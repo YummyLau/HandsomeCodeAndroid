@@ -11,4 +11,10 @@ public interface IControlView {
     void updateBufferPosition(long bufferPosition);
 
     void setupDuration(long duration);
+
+    void onControlVisibleChange();
+
+    void onPlay();
+
+    void onPause();
 }

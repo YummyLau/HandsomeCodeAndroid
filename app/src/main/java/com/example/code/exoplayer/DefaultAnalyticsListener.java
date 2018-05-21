@@ -32,19 +32,19 @@ public class DefaultAnalyticsListener implements AnalyticsListener {
     public void onPlayerStateChanged(EventTime eventTime, boolean playWhenReady, int playbackState) {
         switch (playbackState) {
             case Player.STATE_IDLE: {
-                Log.d(TAG, "onLoadingChanged-playbackState： " + "STATE_IDLE  playWhenReady: " + playWhenReady);
+                Log.d(TAG, "onPlayerStateChanged-playbackState： " + "STATE_IDLE  playWhenReady: " + playWhenReady);
                 break;
             }
             case Player.STATE_BUFFERING: {
-                Log.d(TAG, "onLoadingChanged-playbackState： " + "STATE_BUFFERING  playWhenReady: " + playWhenReady);
+                Log.d(TAG, "onPlayerStateChanged-playbackState： " + "STATE_BUFFERING  playWhenReady: " + playWhenReady);
                 break;
             }
             case Player.STATE_READY: {
-                Log.d(TAG, "onLoadingChanged-playbackState： " + "STATE_READY  playWhenReady: " + playWhenReady);
+                Log.d(TAG, "onPlayerStateChanged-playbackState： " + "STATE_READY  playWhenReady: " + playWhenReady);
                 break;
             }
             case Player.STATE_ENDED: {
-                Log.d(TAG, "onLoadingChanged-playbackState： " + "STATE_ENDED  playWhenReady: " + playWhenReady);
+                Log.d(TAG, "onPlayerStateChanged-playbackState： " + "STATE_ENDED  playWhenReady: " + playWhenReady);
                 break;
             }
         }
