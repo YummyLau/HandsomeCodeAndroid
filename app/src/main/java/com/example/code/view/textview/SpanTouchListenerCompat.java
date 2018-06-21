@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+
 /**
  * 兼容处理textview spanable点击事件的问题：
  * 1. 处理列表内容滑动
