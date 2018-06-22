@@ -16,11 +16,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.netease.environment.utils.LogUtils;
-import com.netease.xmtoollibrary.utils.DisplayUtils;
-import com.netease.xmtoollibrary.utils.StringUtils;
-import com.netease.xmtoollibrary.utils.ToastUtils;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -206,9 +201,9 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
         int chinesePunctuationCount = 0; // 中文标点
         for (int i = 0; i < s.length(); i++) {
             char singleChar = s.charAt(i);
-            if (StringUtils.isChinesePunctuation(singleChar)) {
-                chinesePunctuationCount++;
-            }
+//            if (StringUtils.isChinesePunctuation(singleChar)) {
+//                chinesePunctuationCount++;
+//            }
         }
         int allCount = string.length();
         int otherCount = allCount - chineseCount - chinesePunctuationCount;
@@ -332,11 +327,12 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
     }
 
     public int getKeyBoardHeight() {
-        if (!PanelHelper.isPortrait(activity)) {
-            return sp.getInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT_FOR_L, DisplayUtils.dip2px(activity, DEFAULT_KEYBOARD_HEIGHT_FOR_L));
-        } else {
-            return sp.getInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT_FOR_P, DisplayUtils.dip2px(activity, DEFAULT_KEYBOARD_HEIGHT_FOR_P));
-        }
+//        if (!PanelHelper.isPortrait(activity)) {
+//            return sp.getInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT_FOR_L, DisplayUtils.dip2px(activity, DEFAULT_KEYBOARD_HEIGHT_FOR_L));
+//        } else {
+//            return sp.getInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT_FOR_P, DisplayUtils.dip2px(activity, DEFAULT_KEYBOARD_HEIGHT_FOR_P));
+//        }
+        return -1;
     }
 
     public void setKeyBoardHeight(int hetght) {
@@ -523,7 +519,7 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
                     newInputFilter[size] = new InputFilter.LengthFilter(maxLength);
                     panelSwitchHelper.editView.setFilters(newInputFilter);
                 } catch (Exception e) {
-                    LogUtils.error("", e.getMessage());
+//                    LogUtils.error("", e.getMessage());
                 }
             }
 
@@ -563,7 +559,7 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s != null && getLength(s) > maxLength) {
                     if (!overLength) {
-                        ToastUtils.showShort(appContext, "输入超过长度：" + maxLength);
+//                        ToastUtils.showShort(appContext, "输入超过长度：" + maxLength);
                     }
                     overLength = true;
                     editView.removeTextChangedListener(this);
@@ -590,7 +586,8 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
                 for (int i = 0; i < originCharSequence.length(); i++) {
                     CharSequence singleCharSequence = originCharSequence.subSequence(i, i + 1);
                     if (PanelSwitchHelper.PATTERN.matcher(singleCharSequence).matches()
-                            || StringUtils.isChinesePunctuation(singleCharSequence.charAt(0))) { // 中文和标点符号占2个字符
+                            ) { // 中文和标点符号占2个字符
+//                        || StringUtils.isChinesePunctuation(singleCharSequence.charAt(0))
                         count += 2;
                     } else {
                         count++;

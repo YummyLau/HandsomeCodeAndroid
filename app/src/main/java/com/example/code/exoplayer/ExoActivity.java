@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.example.code.R;
 import com.example.code.base.BaseActivity;
+import com.example.code.databinding.ActivityExoLayoutBinding;
 
 /**
  * 播放器测试类
@@ -13,7 +14,7 @@ import com.example.code.base.BaseActivity;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public class ExoActivity extends BaseActivity {
+public class ExoActivity extends BaseActivity<ActivityExoLayoutBinding> {
 
     public static void start(Context context) {
         Intent intent = new Intent(context, ExoActivity.class);

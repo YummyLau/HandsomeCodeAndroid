@@ -1,5 +1,7 @@
 package com.example.code.base;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -14,9 +16,10 @@ import android.view.View;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity<DataBinding extends ViewDataBinding> extends AppCompatActivity {
 
-    public View contentView;
+    protected DataBinding binding;
+    protected View contentView;
 
     @LayoutRes
     @NonNull
@@ -25,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        contentView = LayoutInflater.from(this).inflate(getLayoutRes(), null, false);
-        setContentView(contentView);
+        binding = DataBindingUtil.setContentView(this, getLayoutRes());
+        contentView = binding.getRoot();
     }
 }

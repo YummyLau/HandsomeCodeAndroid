@@ -2,11 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-
     dataBinding {
         enabled = true
     }
-
     defaultConfig {
         applicationId "com.example.code"
         minSdkVersion 17
@@ -29,11 +27,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    compileOptions{
-        sourceCompatibility  JavaVersion.VERSION_1_8
-        targetCompatibility   JavaVersion.VERSION_1_8
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
@@ -42,23 +40,17 @@ dependencies {
     "$testImplementation" 'junit:junit:4.12'
     "$androidTestImplementation" 'com.android.support.test:runner:1.0.1'
     "$androidTestImplementation" 'com.android.support.test.espresso:espresso-core:3.0.1'
-
     "$api" deps.support.v4
     "$api" deps.support.v7
     "$api" deps.support.palette
     "$api" deps.support.recyclerview
     "$api" deps.support.multidex
-
     "$api" deps.room.runtime
     annotationProcessor deps.room.compiler
-
     "$api" deps.lifecycle.extensions
     "$api" deps.lifecycle.runtime
     annotationProcessor deps.lifecycle.compiler
-
-
     "$api" deps.glide
-
     "$api" deps.exoplayer
     "$api" deps.verticalviewpager
 }

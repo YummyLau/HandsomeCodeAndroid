@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.code.base.BaseActivity;
 import com.example.code.exoplayer.ExoActivity;
+import com.example.code.html.HTMLActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,7 @@ public class MainActivity extends BaseActivity {
     private void initData() {
         List<HolderData> list = new ArrayList<>();
         list.add(new HolderData(Holder.Type.EXOPLAYER, "ExoPlayer 例子"));
+        list.add(new HolderData(Holder.Type.HTML, "HTML解析 例子"));
         mRecyclerView.setAdapter(new Adapter(this, list));
     }
 
@@ -100,6 +102,7 @@ public class MainActivity extends BaseActivity {
         @IntDef({Type.EXOPLAYER})
         public @interface Type {
             int EXOPLAYER = 0;
+            int HTML = 1;
         }
 
         private TextView mTextView;
@@ -117,6 +120,10 @@ public class MainActivity extends BaseActivity {
                     switch (holderData.type) {
                         case Type.EXOPLAYER: {
                             ExoActivity.start(v.getContext());
+                            break;
+                        }
+                        case Type.HTML: {
+                            HTMLActivity.start(v.getContext());
                             break;
                         }
                     }

@@ -3,4 +3,99 @@
 
     <!-- crash -->
     <string name="crash_for_tip">程序异常退出</string>
+
+    <!-- html -->
+    <string name="html_sample">
+        <![CDATA[
+<p>
+    <a href="http://yummylau.com">a 超链接</a>
+</p>
+
+<p>
+    <b>b 粗体</b>
+</p>
+
+<p>
+    <big>big 放大字体</big>
+</p>
+
+<p>
+    <small>small 缩小字体</small>
+</p>
+
+<p>
+    <blockquote>block 块引用</blockquote>
+</p>
+
+<p>
+    br 换行标签<br>
+</p>
+
+<p>
+    <cite>cite 参考文献引用</cite>
+</p>
+
+<p>
+    <dfn>dfn 标记那些对特殊术语或短语的定义</dfn>
+</p>
+
+<p>
+    <dfn>dfn 标记那些对特殊术语或短语的定义</dfn>
+</p>
+
+<div>
+  <p>div 块级元素</p>
+</div>
+
+<p>
+    <em>em 斜体</em>
+</p>
+
+<p>
+    <strong>strong 强调</strong>
+</p>
+
+<p>
+    <font size="13" color="blue" face="verdana">font 规定字体</font>
+</p>
+
+<p>
+    <h1>h1</h1>
+    <h2>h2</h2>
+    <h3>h3</h3>
+    <h4>h4</h4>
+    <h5>h5</h5>
+    <h6>h6</h6>
+</p>
+
+<p>
+    <i>i 斜文本</i>
+</p>
+
+<p>
+    <img src="http://img0.imgtn.bdimg.com/it/u=556386140,2024865136&fm=27&gp=0.jpg"  alt="img 图片"/>
+</p>
+
+<p>
+    <strike>strike 删除线</strike>
+</p>
+
+<p>
+    <sub>sub 下标文本</sub>
+</p>
+
+<p>
+    <sup>sup 上标文本</sup>
+</p>
+
+<p>
+    <tt>tt 类似打字机或者等宽的文本效果</tt>
+</p>
+
+<p>
+    <u>u 下划线</u>
+</p>
+
+        ]]>
+    </string>
 </resources>
