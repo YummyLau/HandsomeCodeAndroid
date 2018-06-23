@@ -45,11 +45,14 @@ dependencies {
     "$api" deps.support.palette
     "$api" deps.support.recyclerview
     "$api" deps.support.multidex
+    "$api" deps.support.design
     "$api" deps.room.runtime
     annotationProcessor deps.room.compiler
+
     "$api" deps.lifecycle.extensions
     "$api" deps.lifecycle.runtime
     annotationProcessor deps.lifecycle.compiler
+
     "$api" deps.glide
     "$api" deps.exoplayer
     "$api" deps.verticalviewpager
