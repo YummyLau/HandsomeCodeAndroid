@@ -19,6 +19,8 @@ import com.example.code.base.BaseActivity;
 import com.example.code.exoplayer.ExoActivity;
 import com.example.code.html.HTMLActivity;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         initView();
         initData();
+        new Test();
     }
 
     private void initView() {

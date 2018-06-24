@@ -7,7 +7,6 @@ import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Modifier;
-import javax.lang.model.element.VariableElement;
 
 /**
  * sharedPreference助手类
@@ -17,7 +16,7 @@ import javax.lang.model.element.VariableElement;
  */
 public class SharedPreferenceUtilsCreator {
 
-    private void newSharedPrefrences() {
+    public static TypeSpec newSharedPrefrences() {
 
         FieldSpec sApplicationContext =
                 FieldSpec.builder(ClassName.get("android.content", "Context"), "sApplicationContext", Modifier.PRIVATE, Modifier.STATIC)
@@ -33,6 +32,12 @@ public class SharedPreferenceUtilsCreator {
                         .addField(sApplicationContext)
                         .addField(mSharedPreferences)
 
+                        .addMethod(MethodInstanceMethod())
+                        .addMethod(MethodInstanceMethod2())
+
+                        .addMethod(buildConstructorMethod())
+                        .addMethod(buildInitMethod())
+
                         .addMethod(buildPutMethod(String.class))
                         .addMethod(buildPutMethod(Integer.class))
                         .addMethod(buildPutMethod(Long.class))
@@ -46,6 +51,64 @@ public class SharedPreferenceUtilsCreator {
                         .addMethod(buildGetMethod(Boolean.class))
 
                         .build();
+
+        return helperTypeSpec;
+    }
+
+    public static MethodSpec MethodInstanceMethod(){
+        MethodSpec.Builder method = MethodSpec
+                .methodBuilder("getInstance")
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                .returns(String.class);
+        //添加参数
+        method.addParameter(ClassName.get(String.class), "preferenceFileName");
+        //构建方法体
+        method.addStatement("return getInstance(preferenceName, Context.MODE_PRIVATE)");
+        return method.build();
+    }
+
+    public static MethodSpec MethodInstanceMethod2(){
+        MethodSpec.Builder method = MethodSpec
+                .methodBuilder("getInstance")
+                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                .returns(String.class);
+        //构建方法体
+        method.addStatement("WeakReference<SharedPreferenceUtil> weakReference = sInstances.get(preferenceName)");
+        method.addStatement("SharedPreferenceUtil sharedPreferenceUtil = weakReference == null ? null : weakReference.get()");
+        method.beginControlFlow("if (sharedPreferenceUtil == null)");
+        method.addStatement("sharedPreferenceUtil = new SharedPreferenceUtil(sApplicationContext.getSharedPreferences(preferenceName, mode))");
+        method.addStatement("sInstances.put(preferenceName, new WeakReference<>(sharedPreferenceUtil))");
+        method.endControlFlow();
+        method.addStatement("return sharedPreferenceUtil");
+        return method.build();
+    }
+
+    public static MethodSpec buildConstructorMethod(){
+        MethodSpec.Builder method = MethodSpec
+                .methodBuilder("SharedPreferenceUtil")
+                .addModifiers(Modifier.PRIVATE)
+                .returns(TypeName.VOID);
+        //添加参数
+        method.addParameter(ClassName.get("android.content", "SharedPreferences"), "sharedPreferences");
+        //构建方法体
+        method.addStatement("mSharedPreferences = sharedPreferences");
+        return method.build();
+    }
+
+    public static MethodSpec buildInitMethod(){
+        MethodSpec.Builder method = MethodSpec
+                .methodBuilder("init")
+                .addModifiers(Modifier.PUBLIC,Modifier.STATIC)
+                .returns(TypeName.VOID);
+        //添加参数
+        method.addParameter(ClassName.get("android.content", "Context"), "context");
+        //构建方法体
+        method.addStatement("      if (context == null) {\n" +
+                "                throw new RuntimeException(TAG + \"#init: context can't be null !\");\n" +
+                "            }");
+        method.addStatement("sApplicationContext = context");
+        return method.build();
+
     }
 
     public static MethodSpec buildGetMethod(Class valueClass) {
@@ -62,13 +125,11 @@ public class SharedPreferenceUtilsCreator {
             methodName.append("Boolean");
         }
         MethodSpec.Builder method = MethodSpec
-                .methodBuilder(valueClass.getName())
+                .methodBuilder(methodName.toString())
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
-                .returns(TypeName.VOID);
-        //添加参数
+                .returns(String.class);
         method.addParameter(ClassName.get(String.class), "key");
         method.addParameter(ClassName.get(valueClass), "defaultValue");
-        //构建方法体
         method.addStatement("return mSharedPreferences.getBoolean(key, defaultValue)");
         return method.build();
     }
@@ -87,7 +148,7 @@ public class SharedPreferenceUtilsCreator {
             methodName.append("Boolean");
         }
         MethodSpec.Builder method = MethodSpec
-                .methodBuilder(valueClass.getName())
+                .methodBuilder(methodName.toString())
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL, Modifier.STATIC)
                 .returns(TypeName.VOID);
         //添加参数
