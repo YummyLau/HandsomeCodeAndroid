@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * html扩展标签
@@ -19,29 +20,91 @@ import java.util.Set;
  */
 public class TagActions {
 
-    public static final Map<String, TagAction> tags = new HashMap<>();
-    public static final Set<String> supportTags = new HashSet<>();
+    private static final String FONT = "font";
+
+    private static final String H1 = "h1";
+    private static final String B = "b";
+    private static final String STRONG = "strong";
+    private static final String STRIKE = "strike";
+    private static final String DEL = "del";
+    private static final String BLOCK_QUOTE = "blockquote";
+    private static final String LI = "li";
+    private static final String A = "a";
+    private static final String IMG = "img";
+
+    public static final Set<String> addTags = new HashSet<>();
+    public static final Set<String> allTags = new HashSet<>();
+
+    private static final Stack<TagAction> mActions = new Stack<>();
 
     static {
-        tags.put("font", new CompatFontTag());
-        tags.put("del", new SupportDelTag());
+        addTags.add(H1);
+        addTags.add(B);
+        addTags.add(STRONG);
+        addTags.add(STRIKE);
+        addTags.add(DEL);
+        addTags.add(BLOCK_QUOTE);
+        addTags.add(LI);
+        addTags.add(A);
+        addTags.add(IMG);
 
-        supportTags.add("del");
+        allTags.add(FONT);
+        allTags.addAll(addTags);
     }
 
-    public static boolean isSupportTag(@NonNull String tag) {
-        return !TextUtils.isEmpty(tag) && supportTags.contains(tag);
+    public static boolean isAddTag(@NonNull String tag) {
+        return !TextUtils.isEmpty(tag) && addTags.contains(tag);
     }
 
-    public static boolean isHandleTag(@NonNull String tag) {
-        return !TextUtils.isEmpty(tag) && tags.containsKey(tag);
-    }
 
     @Nullable
-    public static TagAction getHandleTag(@NonNull String tag) {
-        if (!TextUtils.isEmpty(tag)) {
-            return tags.get(tag);
+    public static TagAction getHandleTag(@NonNull String tag, boolean pop) {
+        TagAction action = null;
+        if (!TextUtils.isEmpty(tag) && allTags.contains(tag)) {
+            if (pop) {
+                switch (tag) {
+                    case H1:
+                    case B:
+                    case STRONG: {
+                        action = new AddStrong();
+                        break;
+                    }
+                    case DEL:
+                    case STRIKE: {
+                        action = new AddDel();
+                        break;
+                    }
+                    case BLOCK_QUOTE: {
+                        action = new AddBlockQuote();
+                        break;
+                    }
+                    case LI: {
+                        action = new AddLi();
+                        break;
+                    }
+                    case A: {
+                        action = new AddA();
+                        break;
+                    }
+                    case IMG: {
+                        action = new AddImg();
+                        break;
+                    }
+                    case FONT: {
+                        action = new AddBlockQuote();
+                        break;
+                    }
+                    default: {
+                        return null;
+                    }
+                }
+                if (action != null && pop) {
+                    mActions.push(action);
+                }
+            } else {
+                action = mActions.pop();
+            }
         }
-        return null;
+        return action;
     }
 }

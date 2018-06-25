@@ -4,6 +4,8 @@ import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
 
+import com.example.code.html.HtmlParser;
+
 import org.xml.sax.Attributes;
 
 import java.util.Stack;
@@ -14,12 +16,12 @@ import java.util.Stack;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public class SupportDelTag implements TagAction {
+public class AddDel extends TagAction {
 
     private Stack<Integer> startIndex = new Stack<>();
 
     @Override
-    public void action(boolean opening, String tag, Editable output, Attributes attributes) {
+    public void action(HtmlParser parser, boolean opening, String tag, Editable output, Attributes attributes) {
         if (opening) {
             startIndex.push(output.length());
         } else {

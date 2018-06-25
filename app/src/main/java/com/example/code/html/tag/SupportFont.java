@@ -17,13 +17,13 @@ import java.util.Stack;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public class CompatFontTag implements TagAction {
+public class SupportFont extends TagAction {
 
     private Stack<Integer> startIndex = new Stack<>();
     private Stack<String> propertyValue = new Stack<>();
 
     @Override
-    public void action(boolean opening, String tag, Editable output, Attributes attributes) {
+    public void action(HtmlParser parser, boolean opening, String tag, Editable output, Attributes attributes) {
         if (opening) {
             startIndex.push(output.length());
             propertyValue.push(HtmlParser.getValue(attributes, "size"));

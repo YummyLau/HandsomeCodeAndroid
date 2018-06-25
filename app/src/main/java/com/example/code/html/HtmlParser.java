@@ -21,19 +21,35 @@ import java.util.ArrayDeque;
  */
 public class HtmlParser implements Html.TagHandler, ContentHandler {
 
-    private final TagHandler handler;
+    /**
+     * 自定义实现
+     */
+    private TextView textView;
+    private final HtmlImageGetter imageGetter;
+    private final HtmlTagHandler handler;
+
     private ContentHandler wrapped;
     private Editable text;
     private ArrayDeque<Boolean> tagStatus = new ArrayDeque<>();
 
-    private HtmlParser(TagHandler handler) {
+    private HtmlParser(TextView textView, HtmlTagHandler handler, HtmlImageGetter imageGetter) {
+        this.textView = textView;
         this.handler = handler;
+        this.imageGetter = imageGetter;
+    }
+
+    public HtmlImageGetter getImageGetter() {
+        return imageGetter;
+    }
+
+    public TextView getTextView() {
+        return textView;
     }
 
     public interface TagHandler {
         // return true here to indicate that this tag was handled and
         // should not be processed further
-        boolean handleTag(boolean opening, String tag, Editable output, Attributes attributes);
+        boolean handleTag(HtmlParser parser, boolean opening, String tag, Editable output, Attributes attributes);
     }
 
     public static String getValue(Attributes attributes, String name) {
@@ -89,7 +105,7 @@ public class HtmlParser implements Html.TagHandler, ContentHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-        boolean isHandled = handler.handleTag(true, localName, text, atts);
+        boolean isHandled = handler.handleTag(this, true, localName, text, atts);
         tagStatus.addLast(isHandled);
         if (!isHandled) {
             wrapped.startElement(uri, localName, qName, atts);
@@ -101,7 +117,7 @@ public class HtmlParser implements Html.TagHandler, ContentHandler {
         if (!tagStatus.removeLast()) {
             wrapped.endElement(uri, localName, qName);
         }
-        handler.handleTag(false, localName, text, null);
+        handler.handleTag(this, false, localName, text, null);
     }
 
     @Override
@@ -124,16 +140,11 @@ public class HtmlParser implements Html.TagHandler, ContentHandler {
         wrapped.skippedEntity(name);
     }
 
-    private static Spanned buildSpannedText(String html, ImageGetter imageGetter, TagHandler handler) {
-        // add a tag at the start that is not handled by default,
-        // allowing custom tag handler to replace xmlReader contentHandler
-        return Html.fromHtml("<inject/>" + html, imageGetter, new HtmlParser(handler));
-    }
 
     public static void buildSpannedTextByHtml(TextView textView, String html) {
         if (textView == null || TextUtils.isEmpty(html)) {
             return;
         }
-        textView.setText(buildSpannedText(html,new ImageGetter(textView),new com.example.code.html.tag.TagHandler()));
+        textView.setText(Html.fromHtml("<inject/>" + html, null, new HtmlParser(textView, new HtmlTagHandler(), new HtmlImageGetter(textView))));
     }
 }

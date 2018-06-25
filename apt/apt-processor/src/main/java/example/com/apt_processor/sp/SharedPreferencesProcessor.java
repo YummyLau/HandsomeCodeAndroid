@@ -1,17 +1,18 @@
 package example.com.apt_processor.sp;
 
-
-import com.example.spannotation.SharedPreferencesField;
-import com.example.spannotation.SharedPreferencesFileName;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -27,6 +28,9 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
+
+import example.com.apt_annotation.sp.SharedPreferencesField;
+import example.com.apt_annotation.sp.SharedPreferencesFileName;
 
 /**
  * 编译
@@ -67,95 +71,73 @@ public class SharedPreferencesProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
 
-        MethodSpec main = MethodSpec.methodBuilder("main")
-                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                .returns(void.class)
-                .addParameter(String[].class, "args")
-                .addStatement("$T.out.println($S)", System.class, "Hello, JavaPoet!")
-                .build();
+        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SharedPreferencesFileName.class);
+        for (Element element : elements) {
+            if (element.getKind() != ElementKind.CLASS) {
+                messager.printMessage(Diagnostic.Kind.ERROR,
+                        String.format("Only classes can be annotated with @%s.", SharedPreferencesFileName.class.getSimpleName()));
+                return true;
+            }
+            TypeElement typeElement = (TypeElement) element;
+            if (!isValidClass(typeElement)) {
+                return true;
+            }
 
-        TypeSpec helloWorld = TypeSpec.classBuilder("HelloWorld")
-                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                .addMethod(main)
-                .build();
+            //获取 SharedPreferencesFileName 注解
+            SharedPreferencesFileName annotation = typeElement.getAnnotation(SharedPreferencesFileName.class);
 
-        JavaFile javaFile = JavaFile.builder("com.songwenju.aptproject", helloWorld)
-                .build();
+            //存储文件key
+            String keyValue = annotation.key();
+            if (keyValue.equals("")) {
+                keyValue = annotation.getClass().getSimpleName().toLowerCase() + "_key";
+            }
+            String key = keyValue.toUpperCase();
+            List<? extends Element> members = elementUtils.getAllMembers(typeElement);
 
-        try {
-            javaFile.writeTo(processingEnv.getFiler());
-        } catch (IOException e) {
-            e.printStackTrace();
+            String packageName = elementUtils.getPackageOf(typeElement).getQualifiedName().toString();
+            String getUtilInstance = packageName + ".SharedPreferenceUtil.getInstance";
+
+            List<MethodSpec> methodList = new ArrayList<>();
+            for (Element ele : members) {
+                final boolean isVariableElement = ele instanceof VariableElement;
+                if (!isVariableElement) {
+                    continue;
+                }
+
+                //获取 SharedPreferencesField 注解
+                SharedPreferencesField configMember = ele.getAnnotation(SharedPreferencesField.class);
+                if (configMember == null) {
+                    continue;
+                }
+
+                //构建put get 方法
+                methodList.add(buildGetMethod((VariableElement) ele, key, getUtilInstance));
+                methodList.add(buildGetMethod((VariableElement) ele, key, getUtilInstance));
+            }
+
+
+            if (!hasCreatedUtils) {
+                writeNewFile(packageName, SharedPreferenceUtilsCreator.newSharedPrefrences());
+                hasCreatedUtils = true;
+            }
+
+
+            //生成操作类
+            if (!methodList.isEmpty()) {
+                FieldSpec fieldSpec =
+                        FieldSpec.builder(ClassName.get(String.class), key.toUpperCase(), Modifier.FINAL, Modifier.STATIC)
+                        .initializer(CodeBlock.of("\"" + keyValue + "\""))
+                        .build();
+                TypeSpec helperTypeSpec =
+                        TypeSpec.classBuilder(typeElement.getSimpleName().toString() + "_Helper")
+                                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+                                .addField(fieldSpec)
+                                .addMethods(methodList)
+                                .build();
+                writeNewFile(packageName, helperTypeSpec);
+            }
         }
-        return false;
-
-//        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(SharedPreferencesFileName.class);
-//        for (Element element : elements) {
-//            if (element.getKind() != ElementKind.CLASS) {
-//                messager.printMessage(Diagnostic.Kind.ERROR,
-//                        String.format("Only classes can be annotated with @%s.", SharedPreferencesFileName.class.getSimpleName()));
-//                return true;
-//            }
-//            TypeElement typeElement = (TypeElement) element;
-//            if (!isValidClass(typeElement)) {
-//                return true;
-//            }
-//
-//            //获取 SharedPreferencesFileName 注解
-//            SharedPreferencesFileName annotation = typeElement.getAnnotation(SharedPreferencesFileName.class);
-//
-//            //存储文件key
-//            String keyValue = annotation.key();
-//            if (keyValue.equals("")) {
-//                keyValue = annotation.getClass().getSimpleName().toLowerCase() + "_key";
-//            }
-//            String key = keyValue.toUpperCase();
-//            List<? extends Element> members = elementUtils.getAllMembers(typeElement);
-//
-//            String packageName = elementUtils.getPackageOf(typeElement).getQualifiedName().toString();
-//            String getUtilInstance = packageName + ".SharedPreferenceUtil.getInstance";
-//
-//            List<MethodSpec> methodList = new ArrayList<>();
-//            for (Element ele : members) {
-//                final boolean isVariableElement = ele instanceof VariableElement;
-//                if (!isVariableElement) {
-//                    continue;
-//                }
-//
-//                //获取 SharedPreferencesField 注解
-//                SharedPreferencesField configMember = ele.getAnnotation(SharedPreferencesField.class);
-//                if (configMember == null) {
-//                    continue;
-//                }
-//
-//                //构建put get 方法
-//                methodList.add(buildGetMethod((VariableElement) ele, key, getUtilInstance));
-//                methodList.add(buildGetMethod((VariableElement) ele, key, getUtilInstance));
-//            }
-//
-//
-//            if (!hasCreatedUtils) {
-//                writeNewFile(packageName, SharedPreferenceUtilsCreator.newSharedPrefrences());
-//                hasCreatedUtils = true;
-//            }
-//
-//
-//            //生成操作类
-//            if (!methodList.isEmpty()) {
-//                FieldSpec fieldSpec =
-//                        FieldSpec.builder(ClassName.get(String.class), key.toUpperCase(), Modifier.FINAL, Modifier.STATIC)
-//                        .initializer(CodeBlock.of("\"" + keyValue + "\""))
-//                        .build();
-//                TypeSpec helperTypeSpec =
-//                        TypeSpec.classBuilder(typeElement.getSimpleName().toString() + "_Helper")
-//                                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-//                                .addField(fieldSpec)
-//                                .addMethods(methodList)
-//                                .build();
-//                writeNewFile(packageName, helperTypeSpec);
-//            }
-//        }
-//        return true;
+        return true;
     }
 
     private MethodSpec buildGetMethod(VariableElement member, String configKey, String getUtilInstance) {

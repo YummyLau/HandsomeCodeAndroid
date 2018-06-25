@@ -1,8 +1,8 @@
 package com.example.code;
 
 
-import com.example.spannotation.SharedPreferencesField;
-import com.example.spannotation.SharedPreferencesFileName;
+import example.com.apt_annotation.sp.SharedPreferencesField;
+import example.com.apt_annotation.sp.SharedPreferencesFileName;
 
 /**
  * Created by Administrator on 2018/6/24.

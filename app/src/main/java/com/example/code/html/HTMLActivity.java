@@ -39,7 +39,7 @@ public class HTMLActivity extends BaseActivity<ActivityHtmlLayoutBinding> {
 
 
     private void initView() {
-        HtmlParser.buildSpannedTextByHtml(binding.text,getString(R.string.html_sample));
+        HtmlParser.buildSpannedTextByHtml(binding.text,getString(R.string.html_sample2));
     }
 
 }

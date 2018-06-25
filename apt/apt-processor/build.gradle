@@ -5,6 +5,8 @@ dependencies {
     "$implementation" deps.auto.service
     "$implementation" deps.auto.common
     "$implementation" deps.poet.java
+
+    "$implementation" project(path: ':apt-annotation')
 }
 
 sourceCompatibility = "1.7"

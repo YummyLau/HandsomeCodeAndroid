@@ -19,11 +19,11 @@ import com.bumptech.glide.request.transition.Transition;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public class ImageGetter implements Html.ImageGetter {
+public class HtmlImageGetter implements Html.ImageGetter {
 
     public TextView text;
 
-    public ImageGetter(TextView text) {
+    public HtmlImageGetter(TextView text) {
         this.text = text;
     }
 
@@ -65,6 +65,5 @@ public class ImageGetter implements Html.ImageGetter {
             remoteDrawable.setBounds(0, 0, remoteDrawable.getIntrinsicWidth(), remoteDrawable.getIntrinsicHeight());
             setBounds(0, 0, remoteDrawable.getIntrinsicWidth(), remoteDrawable.getIntrinsicHeight());
         }
-
     }
 }
