@@ -2,11 +2,6 @@ apply plugin: 'java-library'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    "$implementation" deps.auto.service
-    "$implementation" deps.auto.common
-    "$implementation" deps.poet.java
-
-    implementation project(':spAnnotation')
 }
 
 sourceCompatibility = "1.7"

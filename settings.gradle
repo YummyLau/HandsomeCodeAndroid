@@ -1,1 +1,1 @@
-include ':app', ':spProcessor', ':spAnnotation'
+include ':app',  'apt:apt-annotation', 'apt:apt-processor'

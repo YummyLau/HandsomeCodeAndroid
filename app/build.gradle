@@ -55,6 +55,4 @@ dependencies {
     "$api" deps.exoplayer
     "$api" deps.verticalviewpager
 
-    implementation project(':spAnnotation')
-    annotationProcessor  project(':spProcessor')
 }
