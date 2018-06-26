@@ -15,7 +15,7 @@ import java.util.Stack;
 
 /**
  * 加粗标签
- * created by g8931 on 2018/6/25
+ * Created by yummyLau on 2018/6/22.
  */
 public class ActionStrong extends TagAction {
 

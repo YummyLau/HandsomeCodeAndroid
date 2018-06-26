@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.code.html.Constants;
 import com.example.code.html.DisplayUtil;
 import com.example.code.html.HtmlParser;
 import com.example.code.html.action.ActionType;
@@ -65,8 +66,8 @@ public class ActionImg extends TagAction {
             int height = 0;
             float radius = DisplayUtil.getWindowWidth(context) * 1.0f / DisplayUtil.getWindowHeight(context);
             try {
-                int sourceWidth = Integer.valueOf(attributes.getValue("", "width"));
-                int sourceHeight = Integer.valueOf(attributes.getValue("", "height"));
+                int sourceWidth = Integer.valueOf(HtmlParser.getValue(attributes, Constants.Attributes.IMG_WIDTH));
+                int sourceHeight = Integer.valueOf(HtmlParser.getValue(attributes, Constants.Attributes.IMG_HEIGHT));
                 if (sourceWidth != 0 && sourceHeight != 0) {
                     radius = sourceWidth * 1.0f / sourceHeight;
                 }

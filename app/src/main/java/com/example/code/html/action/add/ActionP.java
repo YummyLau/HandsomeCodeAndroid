@@ -4,6 +4,7 @@ import android.text.Editable;
 import android.text.Layout;
 import android.text.TextUtils;
 
+import com.example.code.html.Constants;
 import com.example.code.html.HtmlParser;
 import com.example.code.html.action.ActionType;
 import com.example.code.html.action.TagAction;
@@ -28,15 +29,15 @@ public class ActionP extends TagAction {
             String align = attributes.getValue("", "align");
             if (!TextUtils.isEmpty(align)) {
                 switch (align) {
-                    case "center": {
+                    case Constants.Attributes.P_ALIGN_CENTER: {
                         start(output, new Alignment(Layout.Alignment.ALIGN_CENTER));
                         break;
                     }
-                    case "left": {
+                    case Constants.Attributes.P_ALIGN_LEFT: {
                         start(output, new Alignment(Layout.Alignment.ALIGN_NORMAL));
                         break;
                     }
-                    case "right": {
+                    case Constants.Attributes.P_ALIGN_RIGHT: {
                         start(output, new Alignment(Layout.Alignment.ALIGN_OPPOSITE));
                         break;
                     }

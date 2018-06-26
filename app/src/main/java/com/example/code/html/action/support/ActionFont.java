@@ -4,6 +4,7 @@ import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
 
+import com.example.code.html.Constants;
 import com.example.code.html.HtmlParser;
 import com.example.code.html.action.ActionType;
 import com.example.code.html.action.TagAction;
@@ -32,7 +33,7 @@ public class ActionFont extends TagAction {
     public void action(HtmlParser parser, boolean opening, String tag, Editable output, Attributes attributes) {
         if (opening) {
             startIndex.push(output.length());
-            propertyValue.push(HtmlParser.getValue(attributes, "size"));
+            propertyValue.push(HtmlParser.getValue(attributes, Constants.Attributes.FONT_SIZE));
         } else {
             if (!propertyValue.empty()) {
                 try {
