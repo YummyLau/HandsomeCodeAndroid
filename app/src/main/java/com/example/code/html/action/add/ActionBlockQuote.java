@@ -1,20 +1,17 @@
-package com.example.code.html.tag;
+package com.example.code.html.action.add;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Parcel;
-import android.support.annotation.ColorInt;
 import android.text.Editable;
 import android.text.Layout;
-import android.text.ParcelableSpan;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.LeadingMarginSpan;
 import android.text.style.QuoteSpan;
 
 import com.example.code.html.HtmlParser;
+import com.example.code.html.action.ActionType;
+import com.example.code.html.action.TagAction;
 
 import org.xml.sax.Attributes;
 
@@ -24,7 +21,7 @@ import java.util.Stack;
  * 覆盖 blockquote 实现
  * created by g8931 on 2018/6/25
  */
-public class AddBlockQuote extends TagAction {
+public class ActionBlockQuote extends TagAction {
 
     private Stack<Integer> startIndex = new Stack<>();
 
@@ -37,6 +34,11 @@ public class AddBlockQuote extends TagAction {
             endBlockQuote(output);
             output.setSpan(new ForegroundColorSpan(Color.parseColor("#989ABF")), startIndex.pop(), output.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+    }
+
+    @Override
+    public ActionType type() {
+        return ActionType.ADD;
     }
 
     private static class BlockQuote {

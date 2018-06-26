@@ -1,11 +1,12 @@
-package com.example.code.html.tag;
+package com.example.code.html.action.support;
 
 import android.text.Editable;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 
 import com.example.code.html.HtmlParser;
+import com.example.code.html.action.ActionType;
+import com.example.code.html.action.TagAction;
 
 import org.xml.sax.Attributes;
 
@@ -17,10 +18,15 @@ import java.util.Stack;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public class SupportFont extends TagAction {
+public class ActionFont extends TagAction {
 
     private Stack<Integer> startIndex = new Stack<>();
     private Stack<String> propertyValue = new Stack<>();
+
+    @Override
+    public ActionType type() {
+        return ActionType.SUPPORT;
+    }
 
     @Override
     public void action(HtmlParser parser, boolean opening, String tag, Editable output, Attributes attributes) {

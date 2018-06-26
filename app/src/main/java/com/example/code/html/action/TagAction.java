@@ -1,5 +1,6 @@
-package com.example.code.html.tag;
+package com.example.code.html.action;
 
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.Spannable;
@@ -7,6 +8,8 @@ import android.text.Spanned;
 import android.text.style.AlignmentSpan;
 
 import com.example.code.html.HtmlParser;
+import com.example.code.html.action.add.ActionDel;
+import com.example.code.html.action.support.ActionFont;
 
 import org.xml.sax.Attributes;
 
@@ -16,8 +19,8 @@ import java.util.regex.Pattern;
 /**
  * tag需要处理的行为
  * <p>
- * SupportXXX处理的是扩展原支持的Tag缺失的属性 {@link SupportFont}
- * AddXXX 处理的是扩展不支持的Tag {@link AddDel}
+ * SupportXXX处理的是扩展原支持的Tag缺失的属性 {@link ActionFont}
+ * AddXXX 处理的是扩展不支持的Tag {@link ActionDel}
  * <p>
  * Created by yummyLau on 2018/6/22.
  * Email: yummyl.lau@gmail.com
@@ -28,6 +31,10 @@ public abstract class TagAction {
     private static Pattern sTextAlignPattern;
 
     public abstract void action(HtmlParser parser, boolean opening, String tag, Editable output, Attributes attributes);
+
+
+    @NonNull
+    public abstract ActionType type();
 
     protected static void start(Editable text, Object mark) {
         int len = text.length();
@@ -103,7 +110,7 @@ public abstract class TagAction {
         }
     }
 
-    private static void appendNewlines(Editable text, int minNewline) {
+    protected static void appendNewlines(Editable text, int minNewline) {
         final int len = text.length();
 
         if (len == 0) {

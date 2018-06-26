@@ -1,15 +1,12 @@
-package com.example.code.html.tag;
+package com.example.code.html.action.add;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.style.ImageSpan;
 import android.widget.TextView;
@@ -18,8 +15,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.code.html.DisplayUtil;
-import com.example.code.html.HtmlImageGetter;
 import com.example.code.html.HtmlParser;
+import com.example.code.html.action.ActionType;
+import com.example.code.html.action.TagAction;
 
 import org.xml.sax.Attributes;
 
@@ -29,7 +27,7 @@ import org.xml.sax.Attributes;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public class AddImg extends TagAction {
+public class ActionImg extends TagAction {
 
     @Override
     public void action(HtmlParser parser, boolean opening, String tag, Editable output, Attributes attributes) {
@@ -38,6 +36,12 @@ public class AddImg extends TagAction {
         } else {
         }
     }
+
+    @Override
+    public ActionType type() {
+        return ActionType.ADD;
+    }
+
 
     public static class UrlDrawable extends BitmapDrawable {
         private Drawable remoteDrawable;

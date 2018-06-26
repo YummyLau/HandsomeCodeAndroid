@@ -1,10 +1,13 @@
-package com.example.code.html.tag;
+package com.example.code.html.action.add;
 
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.StrikethroughSpan;
 
 import com.example.code.html.HtmlParser;
+import com.example.code.html.action.ActionType;
+import com.example.code.html.action.TagAction;
 
 import org.xml.sax.Attributes;
 
@@ -16,9 +19,14 @@ import java.util.Stack;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public class AddDel extends TagAction {
+public class ActionDel extends TagAction {
 
     private Stack<Integer> startIndex = new Stack<>();
+
+    @Override
+    public ActionType type() {
+        return ActionType.ADD;
+    }
 
     @Override
     public void action(HtmlParser parser, boolean opening, String tag, Editable output, Attributes attributes) {

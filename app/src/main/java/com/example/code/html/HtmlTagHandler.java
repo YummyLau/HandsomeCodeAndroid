@@ -1,11 +1,9 @@
 package com.example.code.html;
 
 import android.text.Editable;
-import android.widget.TextView;
 
-import com.example.code.html.HtmlParser;
-import com.example.code.html.tag.TagAction;
-import com.example.code.html.tag.TagActions;
+import com.example.code.html.action.TagAction;
+import com.example.code.html.tag.TagRegistrar;
 
 import org.xml.sax.Attributes;
 
@@ -19,10 +17,10 @@ public class HtmlTagHandler implements HtmlParser.TagHandler {
 
     @Override
     public boolean handleTag(HtmlParser parser, boolean opening, String tag, Editable output, Attributes attributes) {
-        TagAction action = TagActions.getHandleTag(tag.toLowerCase(), opening);
+        TagAction action = TagRegistrar.getHandleTag(tag.toLowerCase(), opening);
         if (action != null) {
             action.action(parser, opening, tag, output, attributes);
         }
-        return TagActions.isAddTag(tag);
+        return TagRegistrar.isAddTag(tag);
     }
 }

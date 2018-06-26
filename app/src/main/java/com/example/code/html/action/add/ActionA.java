@@ -1,4 +1,4 @@
-package com.example.code.html.tag;
+package com.example.code.html.action.add;
 
 import android.graphics.Color;
 import android.text.Editable;
@@ -6,6 +6,8 @@ import android.text.TextPaint;
 import android.text.style.URLSpan;
 
 import com.example.code.html.HtmlParser;
+import com.example.code.html.action.ActionType;
+import com.example.code.html.action.TagAction;
 
 import org.xml.sax.Attributes;
 
@@ -15,7 +17,7 @@ import org.xml.sax.Attributes;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public class AddA extends TagAction {
+public class ActionA extends TagAction {
 
     @Override
     public void action(HtmlParser parser, boolean opening, String tag, Editable output, Attributes attributes) {
@@ -26,6 +28,10 @@ public class AddA extends TagAction {
         }
     }
 
+    @Override
+    public ActionType type() {
+        return ActionType.ADD;
+    }
 
     private static void startA(Editable text, Attributes attributes) {
         String href = attributes.getValue("", "href");

@@ -1,15 +1,13 @@
-package com.example.code.html.tag;
+package com.example.code.html.action.add;
 
 import android.text.Editable;
-import android.text.Spanned;
 import android.text.style.BulletSpan;
-import android.text.style.StrikethroughSpan;
 
 import com.example.code.html.HtmlParser;
+import com.example.code.html.action.ActionType;
+import com.example.code.html.action.TagAction;
 
 import org.xml.sax.Attributes;
-
-import java.util.Stack;
 
 /**
  * li 标签
@@ -17,7 +15,7 @@ import java.util.Stack;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public class AddLi extends TagAction {
+public class ActionLi extends TagAction {
 
 
     @Override
@@ -27,6 +25,11 @@ public class AddLi extends TagAction {
         } else {
             endLi(output);
         }
+    }
+
+    @Override
+    public ActionType type() {
+        return ActionType.ADD;
     }
 
     private static class Bullet { }
