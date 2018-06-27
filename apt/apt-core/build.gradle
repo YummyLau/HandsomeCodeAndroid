@@ -23,8 +23,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    "$implementation" fileTree(dir: 'libs', include: ['*.jar'])
     "$api" project(":apt-annotation")
-    annotationProcessor project(":apt-processor")
+    "$implementation" deps.support.annotations
 }

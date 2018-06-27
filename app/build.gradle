@@ -55,5 +55,7 @@ dependencies {
     "$api" deps.exoplayer
     "$api" deps.verticalviewpager
 
+
     "$implementation" project(":apt-core")
+    annotationProcessor project(":apt-processor")
 }

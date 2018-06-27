@@ -19,6 +19,7 @@ support.recyclerview = "com.android.support:recyclerview-v7:$versions.support"
 support.multidex = "com.android.support:multidex:$versions.multidex"
 support.v7 = "com.android.support:appcompat-v7:$versions.support"
 support.design = "com.android.support:design:$versions.support"
+support.annotations = "com.android.support:support-annotations:$versions.support"
 ext.deps.support = support
 
 def room = [:]

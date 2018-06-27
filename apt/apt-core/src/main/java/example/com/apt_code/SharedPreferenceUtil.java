@@ -1,4 +1,4 @@
-package com.example.code;
+package example.com.apt_code;
 
 import android.app.Application;
 import android.content.Context;

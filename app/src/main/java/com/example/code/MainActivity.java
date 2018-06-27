@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity {
         initView();
         initData();
         new Test();
+        System.out.print(new Test().a);
     }
 
     private void initView() {

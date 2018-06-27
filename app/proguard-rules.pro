@@ -23,3 +23,6 @@
 #Glide
 -keep public class  extends com.bumptech.glide.module.AppGlideModule
 -keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
+
+# 保护注解
+-keepattributes *Annotation*

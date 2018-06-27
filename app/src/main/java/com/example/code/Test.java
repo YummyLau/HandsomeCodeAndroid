@@ -9,7 +9,7 @@ import example.com.apt_annotation.sp.SharedPreferencesFileName;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-@SharedPreferencesFileName(key = "test_config")
+@SharedPreferencesFileName(name = "test_config")
 public class Test {
 
     @SharedPreferencesField

@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * blog: yummylau.com
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.CLASS)
+@Retention(RetentionPolicy.RUNTIME)
 public @interface SharedPreferencesFileName {
-    String key() default "";
+    String name() default "";
 }
