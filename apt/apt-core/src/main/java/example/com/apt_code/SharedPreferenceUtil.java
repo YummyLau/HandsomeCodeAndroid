@@ -12,7 +12,9 @@ import java.util.Set;
 
 /**
  * 轻量级数据存储
- * Created by g8931 on 2017/8/28.
+ * Created by yummyLau on 2018/6/23.
+ * Email: yummyl.lau@gmail.com
+ * blog: yummylau.com
  */
 
 public class SharedPreferenceUtil {

@@ -12,6 +12,7 @@ versions.verticalviewpager = "19.0.1"
 versions.multidex = "1.0.1"
 
 
+
 def support = [:]
 support.v4 = "com.android.support:support-v4:$versions.support"
 support.palette = "com.android.support:palette-v7:$versions.support"

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.code.base.BaseActivity;
 import com.example.code.exoplayer.ExoActivity;
 import com.example.code.html.HTMLActivity;
+import com.example.code.view.expandableTextView.ExpandableTextActivity;
 
 import org.w3c.dom.Text;
 
@@ -66,6 +67,7 @@ public class MainActivity extends BaseActivity {
         List<HolderData> list = new ArrayList<>();
         list.add(new HolderData(Holder.Type.EXOPLAYER, "ExoPlayer 例子"));
         list.add(new HolderData(Holder.Type.HTML, "HTML解析 例子"));
+        list.add(new HolderData(Holder.Type.EXPANDABLE_TEXTVIEW, "Expandable TextView"));
         mRecyclerView.setAdapter(new Adapter(this, list));
     }
 
@@ -107,6 +109,7 @@ public class MainActivity extends BaseActivity {
         public @interface Type {
             int EXOPLAYER = 0;
             int HTML = 1;
+            int EXPANDABLE_TEXTVIEW = 2;
         }
 
         private TextView mTextView;
@@ -128,6 +131,10 @@ public class MainActivity extends BaseActivity {
                         }
                         case Type.HTML: {
                             HTMLActivity.start(v.getContext());
+                            break;
+                        }
+                        case Type.EXPANDABLE_TEXTVIEW: {
+                            ExpandableTextActivity.start(v.getContext());
                             break;
                         }
                     }

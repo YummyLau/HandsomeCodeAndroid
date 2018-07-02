@@ -9,4 +9,11 @@
         <attr name="civ_fill_color" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="ExpandableTextView">
+        <attr name="collapse_line" format="integer" />
+        <attr name="expand_line" format="integer" />
+        <attr name="collapse_text" format="string" />
+        <attr name="expand_text" format="string" />
+    </declare-styleable>
+
 </resources>

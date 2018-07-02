@@ -24,6 +24,8 @@
 
         <activity android:name=".html.HTMLActivity"/>
 
+        <activity android:name=".view.expandableTextView.ExpandableTextActivity"/>
+
     </application>
 
 </manifest>
