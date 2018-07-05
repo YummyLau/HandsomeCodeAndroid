@@ -1,8 +1,9 @@
-package com.example.code.kbpannel;
+package com.example.code.kbpanel;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Point;
@@ -21,13 +22,7 @@ import android.view.inputmethod.InputMethodManager;
  * blog: yummylau.com
  */
 
-public final class PanelHelper {
-
-    /**
-     * 检测状态栏导航栏高度
-     **/
-    private static final String STATUS_BAR_HEIGHT_RES_NAME = "status_bar_height";
-    private static final String NAVIGATION_BAR_HEIGHT_RES_NAME = "navigation_bar_height";
+public final class KbPanelHelper {
 
 
     public static void showKeyboard(Context context, View view) {
@@ -41,17 +36,17 @@ public final class PanelHelper {
         mInputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static int getStatusbarHeight(Context context) {
-        return getInternalDimensionSize(context.getResources(), STATUS_BAR_HEIGHT_RES_NAME);
+    public static int getStatusBarHeight(Context context) {
+        return getInternalDimensionSize(context.getResources(), Constants.STATUS_BAR_HEIGHT_RES_NAME);
     }
 
-    public static int getNavigationbarHeight(Context context) {
-        return getInternalDimensionSize(context.getResources(), NAVIGATION_BAR_HEIGHT_RES_NAME);
+    public static int getNavigationBarHeight(Context context) {
+        return getInternalDimensionSize(context.getResources(), Constants.NAVIGATION_BAR_HEIGHT_RES_NAME);
     }
 
     private static int getInternalDimensionSize(Resources res, String key) {
         int result = 0;
-        int resourceId = res.getIdentifier(key, "dimen", "android");
+        int resourceId = res.getIdentifier(key, Constants.DIMEN, Constants.ANDROID);
         if (resourceId > 0) {
             result = res.getDimensionPixelSize(resourceId);
         }
@@ -76,5 +71,27 @@ public final class PanelHelper {
             boolean back = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
             return !(menu || back);
         }
+    }
+
+    public static int getKeyBoardHeight(Activity activity) {
+        SharedPreferences sp = activity.getSharedPreferences(Constants.KB_PANEL_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        boolean isPortrait = KbPanelHelper.isPortrait(activity);
+        String key = isPortrait ?
+                Constants.KEYBOARD_HEIGHT_FOR_P : Constants.KEYBOARD_HEIGHT_FOR_L;
+        float defaultHeight = isPortrait ?
+                Constants.DEFAULT_KEYBOARD_HEIGHT_FOR_P : Constants.DEFAULT_KEYBOARD_HEIGHT_FOR_L;
+        return sp.getInt(key, dip2px(activity, defaultHeight));
+    }
+
+    public static boolean setKeyBoardHeight(Activity activity, int height) {
+        SharedPreferences sp = activity.getSharedPreferences(Constants.KB_PANEL_PREFERENCE_NAME, Context.MODE_PRIVATE);
+        String key = KbPanelHelper.isPortrait(activity) ?
+                Constants.KEYBOARD_HEIGHT_FOR_P : Constants.KEYBOARD_HEIGHT_FOR_L;
+        return sp.edit().putInt(key, height).commit();
+    }
+
+    public static int dip2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
     }
 }

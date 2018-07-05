@@ -26,6 +26,8 @@
 
         <activity android:name=".view.expandableTextView.ExpandableTextActivity"/>
 
+        <activity android:name=".kbpanel.test.KeyboardActivity"/>
+
     </application>
 
 </manifest>

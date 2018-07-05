@@ -1,5 +1,1 @@
-include ':app',  ':apt-annotation', ':apt-processor', ':apt-core'
-
-project(':apt-annotation').projectDir = new File("apt/apt-annotation")
-project(':apt-processor').projectDir = new File("apt/apt-processor")
-project(':apt-core').projectDir = new File("apt/apt-core")
+include ':app'

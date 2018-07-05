@@ -1,4 +1,4 @@
-package com.example.code.kbpannel;
+package com.example.code.kbpanel.panel;
 
 /**
  * 面板接口

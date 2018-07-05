@@ -1,12 +1,10 @@
 package com.example.code;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,9 +16,8 @@ import android.widget.TextView;
 import com.example.code.base.BaseActivity;
 import com.example.code.exoplayer.ExoActivity;
 import com.example.code.html.HTMLActivity;
+import com.example.code.kbpanel.test.KeyboardActivity;
 import com.example.code.view.expandableTextView.ExpandableTextActivity;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +37,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         initView();
         initData();
-        new Test();
-        System.out.print(new Test().a);
     }
 
     private void initView() {
@@ -68,6 +63,7 @@ public class MainActivity extends BaseActivity {
         list.add(new HolderData(Holder.Type.EXOPLAYER, "ExoPlayer 例子"));
         list.add(new HolderData(Holder.Type.HTML, "HTML解析 例子"));
         list.add(new HolderData(Holder.Type.EXPANDABLE_TEXTVIEW, "Expandable TextView"));
+        list.add(new HolderData(Holder.Type.KEYBOARD_PANEL, "keyboard panel"));
         mRecyclerView.setAdapter(new Adapter(this, list));
     }
 
@@ -110,6 +106,7 @@ public class MainActivity extends BaseActivity {
             int EXOPLAYER = 0;
             int HTML = 1;
             int EXPANDABLE_TEXTVIEW = 2;
+            int KEYBOARD_PANEL = 3;
         }
 
         private TextView mTextView;
@@ -135,6 +132,10 @@ public class MainActivity extends BaseActivity {
                         }
                         case Type.EXPANDABLE_TEXTVIEW: {
                             ExpandableTextActivity.start(v.getContext());
+                            break;
+                        }
+                        case Type.KEYBOARD_PANEL: {
+                            KeyboardActivity.start(v.getContext());
                             break;
                         }
                     }
