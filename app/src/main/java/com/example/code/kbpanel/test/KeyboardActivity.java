@@ -47,4 +47,12 @@ public class KeyboardActivity extends BaseActivity<ActivityKeyboardLayoutBinding
                 .bindPanelItem(binding.blueClick, binding.panelBlue, true)
                 .build();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (helper != null && helper.hookSystemBackForHindPanel()) {
+            return;
+        }
+        super.onBackPressed();
+    }
 }

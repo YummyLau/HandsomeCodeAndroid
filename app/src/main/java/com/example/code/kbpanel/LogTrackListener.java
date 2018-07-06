@@ -7,7 +7,6 @@ import com.example.code.kbpanel.listener.OnEditFocusChangeListener;
 import com.example.code.kbpanel.listener.OnKeyboardStateListener;
 import com.example.code.kbpanel.listener.OnPanelChangeListener;
 import com.example.code.kbpanel.listener.OnViewClickListener;
-import com.example.code.kbpanel.panel.IPanelView;
 import com.example.code.kbpanel.panel.PanelItem;
 
 /**
