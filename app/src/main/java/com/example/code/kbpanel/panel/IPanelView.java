@@ -1,8 +1,10 @@
 package com.example.code.kbpanel.panel;
 
+import android.support.annotation.Nullable;
+
 /**
- * 面板接口
- * Created by yummyLau on 2018/6/821.
+ * interface, everyPanel should implements
+ * Created by yummyLau on 18-7-07
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
@@ -10,17 +12,20 @@ package com.example.code.kbpanel.panel;
 public interface IPanelView {
 
     /**
-     * 是否在每次切换都需要改变view
-     *
-     * @return
+     * @return true,#onChangeLayout will be called when the keyboard'height changes
      */
-    boolean isRechange();
+    boolean changeLayout();
 
     /**
-     * 每次切换是回调输入法宽高
-     *
+     * will be call when the keyboard'height changes and #changeLayout return true
      * @param width
      * @param height
      */
-    void doChange(int width, int height);
+    void onChangeLayout(int width, int height);
+
+    /**
+     * @return the value will be used by {@link com.example.code.kbpanel.LogTracker}
+     */
+    @Nullable
+    String name();
 }

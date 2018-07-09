@@ -13,7 +13,7 @@ import com.example.code.kbpanel.PanelSwitchHelper;
 
 /**
  * 测试
- * Created by yummyLau on 2018/6/821.
+ * Created by yummyLau on 18-7-07
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
@@ -40,11 +40,13 @@ public class KeyboardActivity extends BaseActivity<ActivityKeyboardLayoutBinding
 
     private void initView() {
         helper = new PanelSwitchHelper.Builder(this)
-                .bindContentView(binding.content)
+                .bindContentView(binding.contentView)
+                .bindEmptyView(binding.emptyView)
                 .bindEditText(binding.editText)
                 .bindPanelItem(binding.redClick, binding.panelRed, true)
                 .bindPanelItem(binding.greenClick, binding.panelGreen, true)
                 .bindPanelItem(binding.blueClick, binding.panelBlue, true)
+                .logTrack(true)
                 .build();
     }
 

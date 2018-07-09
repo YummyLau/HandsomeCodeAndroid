@@ -3,8 +3,8 @@ package com.example.code.kbpanel.listener;
 import android.view.View;
 
 /**
- * 监听 {@link android.widget.EditText} 焦点变化
- * Created by yummyLau on 2018/6/821.
+ * listen to  {@link android.widget.EditText} focus change
+ * Created by yummyLau on 18-7-07
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */

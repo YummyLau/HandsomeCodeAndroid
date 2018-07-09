@@ -31,27 +31,30 @@ import java.util.List;
 
 public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutListener {
 
-
-    private static final long PROTECT_CLICK_DURATION = 500;
     private static long preClickTime = 0;
+    private int flag = Constants.FLAG_NONE;
 
     private Activity activity;
-    private View contentView;                                       //内容布局view，即表情布局以上部分，含编辑框
-    private EditText editView;                                      //内容布局内的编辑框
-    private View emptyView;                                         //空白区域，用于点击之后隐藏输入法或者表情布局
-    private final SparseArray<PanelItem> panelItemSparseArray;      //面板布局
+    private View contentView;                                       //required,include editView and emptyView
+    private EditText editView;                                      //required
+    private View emptyView;
+    private final SparseArray<PanelItem> panelItemSparseArray;
 
-    private boolean keyboardShowing;
-    private int flag = Constants.FLAG_NONE;
-    private boolean userHide = false;
-    private boolean onlyRequestFocus = false;
-
-    private boolean preventOpeningKeyboard = false;
+    private boolean isCheckoutDoing;
+    private boolean isKeyboardShowing;
+    private boolean isHidingKeyboardByUser;
+    private boolean preventOpeningKeyboard;
 
     private final List<OnViewClickListener> viewClickListeners;
     private final List<OnPanelChangeListener> panelChangeListeners;
     private final List<OnKeyboardStateListener> keyboardStatusListeners;
     private final List<OnEditFocusChangeListener> editFocusChangeListeners;
+
+    private CheckoutPanelRunnable checkoutPanelRunnable;
+    private CheckoutKeyboardRunnable checkoutKeyboardRunnable;
+    private UnlockContentHeightRunnable unlockContentHeightRunnable;
+
+    private LogTracker logTracker;
 
     private PanelSwitchHelper(Builder builder) {
 
@@ -61,15 +64,19 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
         emptyView = builder.innerEmptyView;
         panelItemSparseArray = builder.innerPanelArray;
 
-        LogTrackListener logTrackListener = new LogTrackListener();
         viewClickListeners = builder.innerViewClickListeners;
         panelChangeListeners = builder.innerPanelChangeListeners;
         keyboardStatusListeners = builder.innerKeyboardStatusListeners;
         editFocusChangeListeners = builder.innerEditFocusChangeListeners;
-        viewClickListeners.add(logTrackListener);
-        editFocusChangeListeners.add(logTrackListener);
-        keyboardStatusListeners.add(logTrackListener);
-        panelChangeListeners.add(logTrackListener);
+
+        logTracker = new LogTracker(builder.logTrack);
+        if (builder.logTrack) {
+            viewClickListeners.add(logTracker);
+            editFocusChangeListeners.add(logTracker);
+            keyboardStatusListeners.add(logTracker);
+            panelChangeListeners.add(logTracker);
+        }
+
 
         this.activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         this.activity.getWindow().getDecorView().getRootView().getViewTreeObserver().addOnGlobalLayoutListener(this);
@@ -82,30 +89,24 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
         editView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (flag == Constants.FLAG_NONE) {
-                    showPanelByFlag(Constants.FLAG_KEYBOARD);                   //show keyboard
-                } else if (flag != Constants.FLAG_KEYBOARD) {
-                    lockContentHeight(contentView);                             //before showing keyboard，should lock the contentHeight to prevent the beating
-                    hidePanelByFlag(flag);
-                    showPanelByFlag(Constants.FLAG_KEYBOARD);
-                    unlockContentHeightDelayed(contentView);                    //unlock the contentHeight
+                //checkout currentFlag to keyboard
+                boolean result = checkoutFlag(Constants.FLAG_KEYBOARD);
+                //editText click will make keyboard visible by system,so if checkoutFlag fail,should hide keyboard.
+                if (!result && flag != Constants.FLAG_KEYBOARD) {
+                    KbPanelHelper.hideKeyboard(activity, v);
                 }
                 notifyViewClick(v);
             }
         });
 
-        /**
-         * 1.
-         */
+
         editView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    if (!onlyRequestFocus) {
-                        showPanelByFlag(Constants.FLAG_KEYBOARD);
-                    }
+                if (hasFocus && !preventOpeningKeyboard) {
+                    checkoutFlag(Constants.FLAG_KEYBOARD);
                 }
-                onlyRequestFocus = false;
+                preventOpeningKeyboard = false;
                 notifyEditFocusChange(v, hasFocus);
             }
         });
@@ -119,9 +120,8 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
             emptyView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    checkoutFlag(Constants.FLAG_NONE);
                     notifyViewClick(v);
-                    notifyPanelChange(Constants.FLAG_NONE);
-                    showPanelByFlag(Constants.FLAG_NONE);
                 }
             });
         }
@@ -135,125 +135,141 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
                 @Override
                 public void onClick(View v) {
 
-                    //protect click
-                    if (System.currentTimeMillis() - preClickTime <= PROTECT_CLICK_DURATION) {
-                        Log.d(Constants.LOG_TAG, "panelItem invalid click!");
-                        Log.d(Constants.LOG_TAG, "panelItem preClickTime: " + preClickTime);
-                        Log.d(Constants.LOG_TAG, "panelItem currentClickTime: " + System.currentTimeMillis());
+                    if (System.currentTimeMillis() - preClickTime <= Constants.PROTECT_KEY_CLICK_DURATION) {
+                        logTracker.log("PanelSwitchHelper#PanelSwitchHelper panelItem invalid click! preClickTime: " + preClickTime + " currentClickTime: " + System.currentTimeMillis());
                         return;
                     }
 
-
-                    /**
-                     * 1. if current flag is None，show panel which meets flag
-                     * 2. if current flag is keyboard，hide it and show panel which meets flag
-                     * 3. if current flag is one of panels(exclude keyboard)
-                     *  3.1 the flag that will be set is the same as the current flag and support toggling, hide it and show keyboard
-                     *  3.2 on the contrary,hide it and show other panel
-                     */
-                    switch (flag) {
-                        case Constants.FLAG_NONE: {
-                            showPanelByFlag(v.getId());
-                            break;
-                        }
-                        case Constants.FLAG_KEYBOARD: {
-                            lockContentHeight(contentView);
-                            hidePanelByFlag(Constants.FLAG_KEYBOARD);
-                            showPanelByFlag(v.getId());
-                            unlockContentHeightDelayed(contentView);
-                            break;
-                        }
-                        default: {
-                            if (flag == v.getId()) {
-                                if (panelItem.isToggle() && ((View) panelItem.getPanelView()).isShown()) {
-                                    lockContentHeight(contentView);
-                                    hidePanelByFlag(flag);
-                                    showPanelByFlag(Constants.FLAG_KEYBOARD);
-                                    unlockContentHeightDelayed(contentView);
-                                }
-                            } else {
-                                hidePanelByFlag(flag);
-                                showPanelByFlag(v.getId());
-                            }
-                            break;
-                        }
+                    if (flag == panelItem.getFlag() && panelItem.isToggle() && ((View) panelItem.getPanelView()).isShown()) {
+                        checkoutFlag(Constants.FLAG_KEYBOARD);
+                    } else {
+                        checkoutFlag(panelItem.getFlag());
                     }
-                    preClickTime = System.currentTimeMillis();
 
+                    preClickTime = System.currentTimeMillis();
                     notifyViewClick(v);
                 }
             });
         }
     }
 
+    private boolean checkoutFlag(int endFlag) {
 
-    public void requestFocus2(boolean preventOpeningKeyboard) {
-        this.preventOpeningKeyboard = preventOpeningKeyboard;
-        editView.requestFocus();
-    }
-
-
-    public void showKeyboardInitiatively() {
-        if (editView.hasFocus()) {
-            editView.performClick();
-        } else {
-            requestFocus2(false);
+        if (isCheckoutDoing()) {
+            logTracker.log("PanelSwitchHelper#checkoutFlag -- is doing checkout,skip!");
+            return false;
         }
+
+        isCheckoutDoing = true;
+
+        if (flag == endFlag) {
+            logTracker.log("PanelSwitchHelper#checkoutFlag -- flag is the same as enfFlag, it doesn't need to be handled!");
+            isCheckoutDoing = false;
+            return true;
+        }
+
+        if (endFlag == Constants.FLAG_NONE) {
+            hidePanelByFlag(flag);
+            showPanelByFlag(Constants.FLAG_NONE);
+            isCheckoutDoing = false;
+            return true;
+        }
+
+        switch (flag) {
+            case Constants.FLAG_NONE: {
+                hidePanelByFlag(Constants.FLAG_NONE);
+                showPanelByFlag(endFlag);
+                break;
+            }
+            case Constants.FLAG_KEYBOARD: {
+                lockContentHeight(contentView);
+                hidePanelByFlag(Constants.FLAG_KEYBOARD);
+                //make sure when panel is showing，the keyboard was gone.
+                postShowPanelRunnable(endFlag);
+                postUnlockHeightContentRunnable(contentView);
+                break;
+            }
+
+            default: {
+                if (endFlag == Constants.FLAG_KEYBOARD) {
+                    lockContentHeight(contentView);
+                    hidePanelByFlag(flag);
+                    showPanelByFlag(Constants.FLAG_KEYBOARD);
+                    postUnlockHeightContentRunnable(contentView);
+                } else {
+                    hidePanelByFlag(flag);
+                    showPanelByFlag(endFlag);
+                }
+            }
+        }
+
+        //通知更改
+        if (flag == endFlag) {
+            notifyPanelChange(flag);
+        }
+        isCheckoutDoing = false;
+        return true;
     }
 
-    /**
-     * 显示pannel面板，状态恢复到flag，回调pannelSwitchListener方法
-     *
-     * @param flag
-     */
+    private boolean isCheckoutDoing() {
+        if (checkoutPanelRunnable != null
+                || unlockContentHeightRunnable != null
+                || checkoutKeyboardRunnable != null) {
+            return true;
+        }
+        return isCheckoutDoing;
+    }
+
+    private void postUnlockHeightContentRunnable(View contentView) {
+        unlockContentHeightRunnable = new UnlockContentHeightRunnable(contentView);
+        editView.postDelayed(unlockContentHeightRunnable, Constants.DELAY_UNLOCK_CONTENT_TIME);
+    }
+
+    private void postShowKeyboardRunnable() {
+        checkoutKeyboardRunnable = new CheckoutKeyboardRunnable();
+        editView.postDelayed(checkoutKeyboardRunnable, Constants.DELAY_SHOW_KEYBOARD_TIME);
+    }
+
+    private void postShowPanelRunnable(int endFlag) {
+        checkoutPanelRunnable = new CheckoutPanelRunnable(endFlag);
+        editView.postDelayed(checkoutPanelRunnable, Constants.DELAY_SHOW_KEYBOARD_TIME);
+    }
+
     private void showPanelByFlag(int flag) {
         switch (flag) {
-            case Constants.FLAG_NONE: {            //回复到NONE_FLAG状态
-                hidePanelByFlag(this.flag);
-                this.flag = Constants.FLAG_NONE;
+            case Constants.FLAG_NONE: {
                 break;
             }
             case Constants.FLAG_KEYBOARD: {
                 editView.requestFocus();
-                editView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        KbPanelHelper.showKeyboard(activity, editView);
-                        setEmptyViewVisible(true);
-                    }
-                }, 200);
+                postShowKeyboardRunnable();
                 break;
             }
             default: {
                 int keyboardHeight = KbPanelHelper.getKeyBoardHeight(activity);
-                Log.d(Constants.LOG_TAG, "keyboard get height is : " + keyboardHeight);
+                logTracker.log("PanelSwitchHelper#showPanelByFlag -- keyboard get height is : " + keyboardHeight);
                 IPanelView panelView = panelItemSparseArray.get(flag).getPanelView();
                 ((View) panelView).getLayoutParams().height = keyboardHeight;
-                if (panelView.isRechange()) {
-                    panelView.doChange(-1, KbPanelHelper.getKeyBoardHeight(activity));
+                ((View) panelView).requestLayout();
+                if (panelView.changeLayout()) {
+                    panelView.onChangeLayout(-1, KbPanelHelper.getKeyBoardHeight(activity));
                 }
                 ((View) panelView).setVisibility(View.VISIBLE);
                 setEmptyViewVisible(true);
             }
         }
         this.flag = flag;
-        notifyPanelChange(flag);
     }
 
-    /**
-     * 隐藏面板，状态恢复到NONE_FLAG
-     *
-     * @param flag
-     */
     private void hidePanelByFlag(int flag) {
-        setEmptyViewVisible(false);
         switch (flag) {
             case Constants.FLAG_NONE: {
                 break;
             }
             case Constants.FLAG_KEYBOARD: {
-                userHide = true;
+                isHidingKeyboardByUser = true;
                 KbPanelHelper.hideKeyboard(activity, editView);
+                setEmptyViewVisible(false);
                 break;
             }
             default: {
@@ -261,6 +277,7 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
                 if (((View) panelView).isShown()) {
                     ((View) panelView).setVisibility(View.GONE);
                 }
+                setEmptyViewVisible(false);
             }
         }
         this.flag = Constants.FLAG_NONE;
@@ -270,20 +287,12 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) contentView.getLayoutParams();
         params.height = contentView.getHeight();
         params.weight = 0.0F;
-    }
-
-    private void unlockContentHeightDelayed(@NonNull final View contentView) {
-        contentView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ((LinearLayout.LayoutParams) contentView.getLayoutParams()).weight = 1.0F;
-            }
-        }, 500l);
+        contentView.requestLayout();
     }
 
     private void setEmptyViewVisible(boolean isVisible) {
         if (emptyView != null) {
-            emptyView.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+            emptyView.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
         }
     }
 
@@ -315,15 +324,15 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
             keyboardHeight = heightDiff - systemUIHeight;
         }
 
-        if (keyboardShowing) {
+        if (isKeyboardShowing) {
             //meet Hinding keyboard
             if (keyboardHeight <= 0) {
-                if (userHide) {
-                    userHide = false;
+                if (isHidingKeyboardByUser) {
+                    isHidingKeyboardByUser = false;
                 } else {
                     hookSystemBackForHindPanel();
                 }
-                keyboardShowing = false;
+                isKeyboardShowing = false;
                 notifyKeyboardState(false);
             }
         } else {
@@ -331,7 +340,7 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
             if (keyboardHeight > 0) {
                 Log.d(Constants.LOG_TAG, "keyboard set height is : " + keyboardHeight);
                 KbPanelHelper.setKeyBoardHeight(activity, keyboardHeight);
-                keyboardShowing = true;
+                isKeyboardShowing = true;
                 notifyKeyboardState(true);
             }
         }
@@ -345,26 +354,28 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
     public boolean hookSystemBackForHindPanel() {
         if (flag != Constants.FLAG_NONE) {
             if (flag != Constants.FLAG_KEYBOARD) {
-                hidePanelByFlag(flag);
+                checkoutFlag(Constants.FLAG_NONE);
             }
-            notifyPanelChange(Constants.FLAG_NONE);
-            setEmptyViewVisible(false);
-            flag = Constants.FLAG_NONE;
             return true;
         }
         return false;
     }
 
-    /**
-     * 重置状态
-     */
-    public void resetNoneState() {
-        if (flag != Constants.FLAG_NONE) {
-            hidePanelByFlag(flag);
-            setEmptyViewVisible(false);
-            flag = Constants.FLAG_NONE;
-            notifyPanelChange(Constants.FLAG_NONE);
+    public void requestFocus(boolean preventOpeningKeyboard) {
+        this.preventOpeningKeyboard = preventOpeningKeyboard;
+        editView.requestFocus();
+    }
+
+    public void showKeyboard() {
+        if (editView.hasFocus()) {
+            editView.performClick();
+        } else {
+            requestFocus(false);
         }
+    }
+
+    public void resetState() {
+        checkoutFlag(Constants.FLAG_NONE);
     }
 
     @Nullable
@@ -400,9 +411,9 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
         }
     }
 
-    private void notifyKeyboardState(boolean showing) {
+    private void notifyKeyboardState(boolean visible) {
         for (OnKeyboardStateListener listener : keyboardStatusListeners) {
-            listener.onKeyboardChange(showing);
+            listener.onKeyboardChange(visible);
         }
     }
 
@@ -412,11 +423,47 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
         }
     }
 
-    /**
-     * 用于构建切换面板
-     * 必须设置： innerContentView  innerEditText
-     * 选择添加： innerPanelArray
-     */
+    private class CheckoutPanelRunnable implements Runnable {
+
+        int flag;
+
+        public CheckoutPanelRunnable(int flag) {
+            this.flag = flag;
+        }
+
+        @Override
+        public void run() {
+            showPanelByFlag(flag);
+            checkoutPanelRunnable = null;
+        }
+    }
+
+    private class CheckoutKeyboardRunnable implements Runnable {
+        @Override
+        public void run() {
+            KbPanelHelper.showKeyboard(activity, editView);
+            setEmptyViewVisible(true);
+            checkoutKeyboardRunnable = null;
+        }
+    }
+
+    private class UnlockContentHeightRunnable implements Runnable {
+
+        private View contentView;
+
+        public UnlockContentHeightRunnable(View contentView) {
+            this.contentView = contentView;
+        }
+
+        @Override
+        public void run() {
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) contentView.getLayoutParams();
+            params.weight = 1.0F;
+            contentView.requestLayout();
+            unlockContentHeightRunnable = null;
+        }
+    }
+
     public static class Builder {
 
         private List<OnViewClickListener> innerViewClickListeners;
@@ -429,6 +476,8 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
         private EditText innerEditText;
         private View innerEmptyView;
         private SparseArray<PanelItem> innerPanelArray;
+
+        private boolean logTrack;
 
         public Builder(Activity activity) {
             this.innerActivity = activity;
@@ -469,7 +518,7 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
                 throw new IllegalArgumentException("panelView is not a view!");
             }
 
-            innerPanelArray.append(keyView.getId(), new PanelItem(keyView.getId(), keyView, panelView, toggleKeyboard));
+            innerPanelArray.append(keyView.getId(), new PanelItem(keyView, panelView, toggleKeyboard));
             return this;
         }
 
@@ -502,6 +551,11 @@ public final class PanelSwitchHelper implements ViewTreeObserver.OnGlobalLayoutL
             if (listener != null) {
                 innerEditFocusChangeListeners.add(listener);
             }
+            return this;
+        }
+
+        public Builder logTrack(boolean logTrack) {
+            this.logTrack = logTrack;
             return this;
         }
 

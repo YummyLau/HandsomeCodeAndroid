@@ -15,15 +15,16 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.code.BuildConfig;
+
 /**
  * 软键盘助手
- * Created by yummyLau on 2018/6/821.
+ * Created by yummyLau on 18-7-07
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
 
 public final class KbPanelHelper {
-
 
     public static void showKeyboard(Context context, View view) {
         InputMethodManager mInputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);

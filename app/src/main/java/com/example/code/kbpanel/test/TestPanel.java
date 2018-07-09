@@ -11,7 +11,7 @@ import com.example.code.kbpanel.Constants;
 import com.example.code.kbpanel.panel.IPanelView;
 
 /**
- * Created by yummyLau on 2018/6/821.
+ * Created by yummyLau on 18-7-07
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
@@ -30,13 +30,21 @@ public class TestPanel extends FrameLayout implements IPanelView {
     }
 
     @Override
-    public boolean isRechange() {
+    public boolean changeLayout() {
         return true;
     }
 
     @Override
-    public void doChange(int width, int height) {
-        Log.d(Constants.LOG_TAG, "panel height is : " + getLayoutParams().height);
-        getLayoutParams().height = height;
+    public void onChangeLayout(int width, int height) {
+        if (height != getLayoutParams().height) {
+            getLayoutParams().height = height;
+            requestLayout();
+        }
+    }
+
+    @Nullable
+    @Override
+    public String name() {
+        return "TestPanel";
     }
 }

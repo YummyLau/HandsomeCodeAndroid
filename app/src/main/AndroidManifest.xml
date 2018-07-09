@@ -20,13 +20,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".exoplayer.ExoActivity"/>
+        <activity android:name=".exoplayer.ExoActivity" />
 
-        <activity android:name=".html.HTMLActivity"/>
+        <activity android:name=".html.HTMLActivity" />
 
-        <activity android:name=".view.expandableTextView.ExpandableTextActivity"/>
+        <activity android:name=".view.expandableTextView.ExpandableTextActivity" />
 
-        <activity android:name=".kbpanel.test.KeyboardActivity"/>
+        <activity android:name=".kbpanel.test.KeyboardActivity" />
 
     </application>
 

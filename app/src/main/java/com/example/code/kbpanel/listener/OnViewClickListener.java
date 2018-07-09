@@ -3,8 +3,8 @@ package com.example.code.kbpanel.listener;
 import android.view.View;
 
 /**
- * 用于解决内部setOnClick之后外部无法获取点击事件
- * Created by yummyLau on 2018/6/821.
+ * preventing listeners that {@link com.example.code.kbpanel.PanelSwitchHelper} set these to view from being overwritten
+ * Created by yummyLau on 18-7-07
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */

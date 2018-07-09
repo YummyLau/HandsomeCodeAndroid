@@ -1,8 +1,7 @@
 package com.example.code.kbpanel;
 
 /**
- * 常量配置
- * Created by yummyLau on 17-4-30
+ * Created by yummyLau on 18-7-07
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
@@ -24,5 +23,9 @@ public class Constants {
     public static final int FLAG_KEYBOARD = 0;
 
     public static final String LOG_TAG = "kbpanel";
+
+    public static final long DELAY_SHOW_KEYBOARD_TIME = 200l;
+    public static final long DELAY_UNLOCK_CONTENT_TIME = 500l;
+    public static final long PROTECT_KEY_CLICK_DURATION = 500l;
 
 }
