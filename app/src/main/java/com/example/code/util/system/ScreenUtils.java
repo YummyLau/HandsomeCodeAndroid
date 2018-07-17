@@ -1,4 +1,4 @@
-package com.example.code.util;
+package com.example.code.util.system;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.Window;
 import android.view.WindowManager;
 
 /**
@@ -32,6 +34,24 @@ public class ScreenUtils {
     private static final String NAVIGATION_BAR_HEIGHT_RES_NAME = "navigation_bar_height";
 
 
+    /**
+     * 在{@link Activity#onCreate(Bundle)}中 setContentView 之前调用
+     *
+     * @param activity
+     */
+    public static void removeTitleBar(@NonNull Activity activity) {
+        if (activity != null) {
+            activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+    }
+
+
+    /**
+     * 判断当前是否是竖屏
+     *
+     * @param context
+     * @return
+     */
     public static boolean isPortrait(@NonNull Context context) {
         if (context == null)
             throw new IllegalArgumentException("context can't be null!");
@@ -50,7 +70,7 @@ public class ScreenUtils {
             Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
             Point size = new Point();
             Point realSize = new Point();
-            display.getSize(size);
+            display.getSize(size);              //删减了系统decor elements，比如虚拟导航栏
             display.getRealSize(realSize);
             return realSize.y != size.y;
         } else {
@@ -91,12 +111,25 @@ public class ScreenUtils {
         return getInternalDimensionSize(context.getResources(), NAVIGATION_BAR_HEIGHT_RES_NAME);
     }
 
+    /**
+     * 获取屏幕可操作区域大小，包含状态栏，标题栏高度
+     *
+     * @param context
+     * @return
+     */
     public static Point getDisplaySize(@NonNull Context context) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(displayMetrics);
         return new Point(displayMetrics.widthPixels, displayMetrics.heightPixels);
     }
 
+
+    /**
+     * 获取屏幕区域大小，包括系统装饰布局，比如导航栏
+     *
+     * @param context
+     * @return
+     */
     public static Point getScreenSize(@NonNull Context context) {
         Point point = new Point();
         try {
@@ -137,7 +170,9 @@ public class ScreenUtils {
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
         Bitmap bmp = view.getDrawingCache();
+
         Point size = getDisplaySize(activity);
+
         Bitmap bp = Bitmap.createBitmap(bmp, 0, 0, size.x, size.y);
         view.destroyDrawingCache();
         return bp;
@@ -153,11 +188,13 @@ public class ScreenUtils {
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
         Bitmap bmp = view.getDrawingCache();
-        Rect frame = new Rect();
+
         //不包括状态栏
+        Rect frame = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        int statusBarHeight = frame.top;
         Point size = getDisplaySize(activity);
+        int statusBarHeight = frame.top;
+
         Bitmap bp = Bitmap.createBitmap(bmp, 0, statusBarHeight, size.x, size.y - statusBarHeight);
         view.destroyDrawingCache();
         return bp;

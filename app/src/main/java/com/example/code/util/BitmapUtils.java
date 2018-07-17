@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RawRes;
@@ -38,7 +37,7 @@ public class BitmapUtils {
      * @return
      */
     public static Bitmap scale(@NonNull Bitmap bitmap, int width, int height) {
-        Bitmap scaledBitmap = bitmap;
+        Bitmap scaledBitmap = null;
         if (bitmap != null && !bitmap.isRecycled()) {
             scaledBitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
         }
@@ -52,11 +51,13 @@ public class BitmapUtils {
      * @param scaleRatio
      * @return
      */
-    public static Bitmap scaleBitmap(@NonNull Bitmap originBitmap, float scaleRatio) {
-        return Bitmap.createScaledBitmap(originBitmap,
-                (int) (originBitmap.getWidth() / scaleRatio),
-                (int) (originBitmap.getHeight() / scaleRatio),
-                false);
+    public static Bitmap scale(@NonNull Bitmap originBitmap, float scaleRatio) {
+        if (originBitmap != null) {
+            int originWidth = originBitmap.getWidth();
+            int originHeight = originBitmap.getHeight();
+            return scale(originBitmap, (int) (originWidth / scaleRatio), (int) (originHeight / scaleRatio));
+        }
+        return null;
     }
 
     /**
@@ -69,7 +70,7 @@ public class BitmapUtils {
     public static Bitmap rotate(@NonNull Bitmap bitmap, int rotate) {
         Matrix matrix = new Matrix();
         matrix.reset();
-        matrix.setRotate(90);
+        matrix.setRotate(rotate);
         Bitmap newBitmap = null;
         try {
             newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
@@ -328,7 +329,7 @@ public class BitmapUtils {
      * @param reqHeight
      * @return
      */
-    private static int calculateInsampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         //原图片高框
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -381,7 +382,7 @@ public class BitmapUtils {
         //不真实解码
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(res, resId, options);
-        options.inSampleSize = calculateInsampleSize(options, reqWidth, reqHeight);
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
         options.inJustDecodeBounds = false;
         // 载入缩略图
         Bitmap src = BitmapFactory.decodeResource(res, resId, options);
@@ -402,7 +403,7 @@ public class BitmapUtils {
         //不真实解码
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(pathName, options);
-        options.inSampleSize = calculateInsampleSize(options, reqWidth, reqHeight);
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
         options.inJustDecodeBounds = false;
         Bitmap src = BitmapFactory.decodeFile(pathName, options);
         return createScaleBitmap(src, reqWidth, reqHeight, options.inSampleSize);

@@ -21,6 +21,7 @@ public class AppUtils {
     private static final String TAG = AppUtils.class.getSimpleName();
     public static final int INVALID_VERSION_CODE = -1;
     public static final String INVALID_VERSION_NAME = "invalid_version_name";
+    public static final String INVALID_APP_NAME = "unknown_name";
 
     /**
      * 判断是否安装某个包
@@ -89,5 +90,10 @@ public class AppUtils {
     public static final String getVersionName(Context context) {
         PackageInfo packageInfo = getPackageInfo(context);
         return packageInfo != null ? packageInfo.versionName : INVALID_VERSION_NAME;
+    }
+
+    public static final String getAppName(Context context) {
+        PackageInfo packageInfo = getPackageInfo(context);
+        return packageInfo != null ? context.getResources().getString(packageInfo.applicationInfo.labelRes) : INVALID_APP_NAME;
     }
 }

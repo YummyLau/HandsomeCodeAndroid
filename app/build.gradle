@@ -54,7 +54,6 @@ dependencies {
     "$api" deps.glide
     "$api" deps.exoplayer
     "$api" deps.verticalviewpager
-
     "$api" deps.spInjector.core
     annotationProcessor deps.spInjector.compiler
 }

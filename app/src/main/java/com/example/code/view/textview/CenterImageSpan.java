@@ -21,7 +21,6 @@ public class CenterImageSpan extends ImageSpan {
     }
 
     /**
-     *
      * @param paint
      * @param text
      * @param start
@@ -74,7 +73,7 @@ public class CenterImageSpan extends ImageSpan {
          * y + fm.ascent 字体的ascent线 y坐标
          * drawble.getBounds().bottom 图片的高度
          */
-        int transY = 1 / 2 * (y + fm.descent + y + fm.ascent - drawable.getBounds().bottom);
+        int transY = (int)(0.5 * (y + fm.descent + y + fm.ascent - drawable.getBounds().bottom));
         canvas.save();
         canvas.translate(x, transY);
         drawable.draw(canvas);

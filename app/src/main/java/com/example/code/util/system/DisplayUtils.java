@@ -1,4 +1,4 @@
-package com.example.code.util;
+package com.example.code.util.system;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -63,7 +63,7 @@ public class DisplayUtils {
 
 
     /**
-     * 获取屏幕宽度ppi
+     * 获取屏幕可操作区域宽度ppi
      *
      * @param context
      * @return 屏幕宽度ppi
@@ -75,7 +75,7 @@ public class DisplayUtils {
     }
 
     /**
-     * 获取屏幕高度ppi
+     * 获取屏幕可操作区域高度ppi
      *
      * @param context
      * @return 屏幕高度ppi
