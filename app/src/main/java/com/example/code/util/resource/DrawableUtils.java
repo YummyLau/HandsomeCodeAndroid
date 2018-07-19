@@ -11,7 +11,20 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 /**
- * drawablexiang
+ * selecotr - {@link android.graphics.drawable.StateListDrawable}
+ * level-list - {@link android.graphics.drawable.LevelListDrawable}
+ * layer-list - {@link android.graphics.drawable.LayerDrawable}
+ * transition - {@link android.graphics.drawable.TransitionDrawable}
+ * color - {@link android.graphics.drawable.ColorDrawable}
+ * shape - {@link android.graphics.drawable.GradientDrawable}
+ * scale - {@link android.graphics.drawable.ScaleDrawable}
+ * clip - {@link android.graphics.drawable.ClipDrawable}
+ * rotate - {@link android.graphics.drawable.RotateDrawable}
+ * animation-list - {@link android.graphics.drawable.AnimationDrawable}
+ * inset - {@link android.graphics.drawable.InsetDrawable}
+ * bitmap - {@link android.graphics.drawable.BitmapDrawable}
+ * nine-path - {@link android.graphics.drawable.NinePatchDrawable}
+ *
  * Created by yummyLau on 2018/4/17.
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com

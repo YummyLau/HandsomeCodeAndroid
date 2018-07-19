@@ -17,6 +17,7 @@ import com.example.code.base.BaseActivity;
 import com.example.code.exoplayer.ExoActivity;
 import com.example.code.html.HTMLActivity;
 import com.example.code.kbpanel.test.KeyboardActivity;
+import com.example.code.keeplive.KeepLiveDemoActivity;
 import com.example.code.view.expandableTextView.ExpandableTextActivity;
 
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ public class MainActivity extends BaseActivity {
         list.add(new HolderData(Holder.Type.HTML, "HTML解析 例子"));
         list.add(new HolderData(Holder.Type.EXPANDABLE_TEXTVIEW, "Expandable TextView"));
         list.add(new HolderData(Holder.Type.KEYBOARD_PANEL, "keyboard panel"));
+        list.add(new HolderData(Holder.Type.kEEPALIVE, "Keep Alive"));
         mRecyclerView.setAdapter(new Adapter(this, list));
     }
 
@@ -107,6 +109,7 @@ public class MainActivity extends BaseActivity {
             int HTML = 1;
             int EXPANDABLE_TEXTVIEW = 2;
             int KEYBOARD_PANEL = 3;
+            int kEEPALIVE = 4;
         }
 
         private TextView mTextView;
@@ -136,6 +139,10 @@ public class MainActivity extends BaseActivity {
                         }
                         case Type.KEYBOARD_PANEL: {
                             KeyboardActivity.start(v.getContext());
+                            break;
+                        }
+                        case Type.kEEPALIVE: {
+                            KeepLiveDemoActivity.start(v.getContext());
                             break;
                         }
                     }

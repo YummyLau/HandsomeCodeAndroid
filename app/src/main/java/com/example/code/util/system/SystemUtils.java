@@ -3,6 +3,7 @@ package com.example.code.util.system;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.PowerManager;
+import android.text.TextUtils;
 
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +42,24 @@ public class SystemUtils {
             }
         }
         return ret;
+    }
+
+    /**
+     * 判断service是否在运行
+     * @param context
+     * @param name
+     * @return
+     */
+    public static boolean isRunningService(Context context, String name) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> runningServices = am.getRunningServices(100);
+        for (ActivityManager.RunningServiceInfo info : runningServices
+                ) {
+            if (TextUtils.equals(info.service.getClassName(), name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

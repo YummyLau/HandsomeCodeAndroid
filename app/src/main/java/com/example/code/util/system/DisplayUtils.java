@@ -1,12 +1,17 @@
 package com.example.code.util.system;
 
+import android.app.Activity;
+import android.app.Application;
+import android.content.ComponentCallbacks;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 /**
  * 像素转化
- *
+ * <p>
  * PPI 每英寸上有多少个像素
  * DPI 每英寸上有多少个点
  * Created by yummyLau on 2018/4/15.
@@ -15,7 +20,6 @@ import android.view.WindowManager;
  */
 
 public class DisplayUtils {
-
 
     /**
      * 将px值转换为dip或dp值，保证尺寸大小不变

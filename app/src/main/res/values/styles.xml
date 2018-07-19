@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="KeepLiveTheme">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

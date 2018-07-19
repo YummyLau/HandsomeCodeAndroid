@@ -20,10 +20,10 @@
     <dimen name="dp_105">105dp</dimen>
 
     <!-- sp -->
-    <dimen name="sp_10">10dp</dimen>
-    <dimen name="sp_11">11dp</dimen>
-    <dimen name="sp_15">15dp</dimen>
-    <dimen name="sp_16">16dp</dimen>
+    <dimen name="sp_10">10sp</dimen>
+    <dimen name="sp_11">11sp</dimen>
+    <dimen name="sp_15">15sp</dimen>
+    <dimen name="sp_16">16sp</dimen>
 
 
 </resources>

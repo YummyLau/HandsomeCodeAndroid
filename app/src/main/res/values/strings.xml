@@ -132,4 +132,9 @@
 
         ]]>
     </string>
+
+
+    <!-- keepalive -->
+    <string name="keep_by_notification">启动双service通知栏</string>
+    <string name="keep_by_one_px_activity">启动监听锁屏监听</string>
 </resources>

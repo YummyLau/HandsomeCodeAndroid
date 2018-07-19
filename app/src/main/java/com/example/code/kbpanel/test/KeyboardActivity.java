@@ -2,6 +2,7 @@ package com.example.code.kbpanel.test;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import com.example.code.R;
 import com.example.code.base.BaseActivity;
 import com.example.code.databinding.ActivityKeyboardLayoutBinding;
 import com.example.code.kbpanel.PanelSwitchHelper;
+import com.example.code.util.system.ScreenUtils;
 
 /**
  * 测试
@@ -36,6 +38,8 @@ public class KeyboardActivity extends BaseActivity<ActivityKeyboardLayoutBinding
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
+        Point point1 = ScreenUtils.getDisplaySize(this);
+        Point point2 = ScreenUtils.getScreenSize(this);
     }
 
     private void initView() {

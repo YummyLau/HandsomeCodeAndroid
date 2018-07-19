@@ -28,6 +28,30 @@
 
         <activity android:name=".kbpanel.test.KeyboardActivity" />
 
+
+        <!-- keep live -->
+        <activity android:name=".keeplive.KeepLiveDemoActivity" />
+
+        <!-- keep live one px -->
+        <activity
+            android:name=".keeplive.onepx.KeepLiveActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:finishOnTaskLaunch="false"
+            android:taskAffinity="com.sososeen09.daemon.keep.live"
+            android:theme="@style/KeepLiveTheme" />
+        <service
+            android:name=".keeplive.onepx.KeepLiveService"
+            android:process=":live_service" />
+
+
+        <!-- keep live foreground notification -->
+        <service android:name=".keeplive.notification.KeepLiveService" />
+        <service android:name=".keeplive.notification.KeepLiveService$InnerService" />
+
+        <!-- keep live job -->
+        <service android:name=".keeplive.job.KeepLiveJob" />
+
     </application>
 
 </manifest>
