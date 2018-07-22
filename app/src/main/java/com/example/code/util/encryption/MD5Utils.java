@@ -18,34 +18,25 @@ public class MD5Utils {
     private final static String TAG = MD5Utils.class.getSimpleName();
     private static final String MD5 = "MD5";
 
+
     /**
-     * 生产32位MD5码
-     * @param str  字符串
-     * @return     MD5
+     * MD5加密
+     *
+     * @param data 明文字符串
+     * @return 密文
      */
-    public static String generateMD5(String str){
-        MessageDigest md5;
-        try {
-            md5 = MessageDigest.getInstance(MD5);
-        } catch (NoSuchAlgorithmException e) {
-            Log.e(TAG, e.toString());
-            return "";
-        }
-        char[] charArray = str.toCharArray();
-        byte[] byteArray = new byte[charArray.length];
-        for (int i = 0; i < charArray.length; i++){
-            byteArray[i] = (byte) charArray[i];
-        }
-        byte[] md5Bytes = md5.digest(byteArray);
-        StringBuffer hexValue = new StringBuffer();
-        for (byte md5Byte : md5Bytes) {
-            int val = ((int) md5Byte) & 0xff;
-            if (val < 16) {
-                hexValue.append("0");
-            }
-            hexValue.append(Integer.toHexString(val));
-        }
-        return hexValue.toString();
+    public static String md5(String data) {
+        return md5(data.getBytes());
+    }
+
+    /**
+     * MD5加密
+     *
+     * @param data 明文字节数组
+     * @return 密文
+     */
+    public static String md5(byte[] data) {
+        return EncryptUtils.bytes2HexString(encryptMD5(data));
     }
 
     /**
@@ -62,22 +53,34 @@ public class MD5Utils {
             while ((numRead = inputStream.read(buffer)) > 0) {
                 mdTemp.update(buffer, 0, numRead);
             }
-            return toHexString(mdTemp.digest());
+            return EncryptUtils.bytes2HexString(mdTemp.digest());
         } catch (Exception e) {
             return null;
         }
     }
 
-    private static String toHexString(byte[] md) {
-        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                'a', 'b', 'c', 'd', 'e', 'f'};
-        int j = md.length;
-        char str[] = new char[j * 2];
-        for (int i = 0; i < j; i++) {
-            byte byte0 = md[i];
-            str[2 * i] = hexDigits[byte0 >>> 4 & 0xf];
-            str[i * 2 + 1] = hexDigits[byte0 & 0xf];
-        }
-        return new String(str);
+
+    /**
+     * MD5加密
+     *
+     * @param data 明文字节数组
+     * @param salt 盐字节数组
+     * @return 密文
+     */
+    public static String md5(byte[] data, byte[] salt) {
+        byte[] dataSalt = new byte[data.length + salt.length];
+        System.arraycopy(data, 0, dataSalt, 0, data.length);
+        System.arraycopy(salt, 0, dataSalt, data.length, salt.length);
+        return EncryptUtils.bytes2HexString(encryptMD5(dataSalt));
+    }
+
+    /**
+     * MD5加密
+     *
+     * @param data 明文字节数组
+     * @return 密文字节数组
+     */
+    public static byte[] encryptMD5(byte[] data) {
+        return EncryptUtils.encryptAlgorithm(data, "MD5");
     }
 }

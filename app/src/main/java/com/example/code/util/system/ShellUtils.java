@@ -40,6 +40,34 @@ public class ShellUtils {
     }
 
     /**
+     * 获取su权限
+     *@return true or false
+     */
+    public static boolean checkRoot() {
+        try {
+            Process process = Runtime.getRuntime().exec("su");
+            DataOutputStream os = new DataOutputStream(
+                    process.getOutputStream());
+            // 改变驱动文件权限
+            for (int i = 0; i < 10; i++) {
+                os.writeBytes("chmod 666 /dev/input/event" + i + "\n");
+                os.flush();
+            }
+            os.writeBytes("exit\n");
+            os.flush();
+
+            if (process.waitFor() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * 是否是在root下执行命令
      *
      * @param commands        命令数组
