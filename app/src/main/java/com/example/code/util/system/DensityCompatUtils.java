@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 
 /**
  * 适配所有机型
+ * http://www.jcodecraeer.com/plus/view.php?aid=10448
  * <p>
  * PPI 每英寸上有多少个像素
  * DPI 每英寸上有多少个点
