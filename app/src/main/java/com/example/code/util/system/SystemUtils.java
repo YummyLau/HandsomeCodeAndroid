@@ -53,8 +53,7 @@ public class SystemUtils {
     public static boolean isRunningService(Context context, String name) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningServiceInfo> runningServices = am.getRunningServices(100);
-        for (ActivityManager.RunningServiceInfo info : runningServices
-                ) {
+        for (ActivityManager.RunningServiceInfo info : runningServices) {
             if (TextUtils.equals(info.service.getClassName(), name)) {
                 return true;
             }

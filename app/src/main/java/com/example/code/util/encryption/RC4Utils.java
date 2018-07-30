@@ -1,7 +1,6 @@
-package com.example.code.util;
+package com.example.code.util.encryption;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;

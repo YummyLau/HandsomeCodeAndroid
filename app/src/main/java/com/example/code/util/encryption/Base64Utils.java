@@ -1,4 +1,4 @@
-package com.example.code.util;
+package com.example.code.util.encryption;
 
 import android.util.Base64;
 import android.util.Log;
