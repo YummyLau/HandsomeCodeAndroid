@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion android_params.compile_sdk
     dataBinding {
         enabled = true
     }
     defaultConfig {
         applicationId "com.example.code"
-        minSdkVersion 17
-        targetSdkVersion 27
+        minSdkVersion android_params.min_sdkd
+        targetSdkVersion android_params.target_sdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -28,10 +28,10 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility android_params.source_java
+        targetCompatibility android_params.target_java
     }
-    buildToolsVersion '27.0.3'
+    buildToolsVersion android_params.build_tools
 }
 
 dependencies {
@@ -55,5 +55,11 @@ dependencies {
     "$api" deps.exoplayer
     "$api" deps.verticalviewpager
     "$api" deps.spInjector.core
+    "$api" deps.spInjector.core
     annotationProcessor deps.spInjector.compiler
+
+
+
+    "$implementation" project(':lib-net')
+
 }

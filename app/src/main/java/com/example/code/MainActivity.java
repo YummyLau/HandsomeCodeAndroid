@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity {
         list.add(new HolderData(Holder.Type.EXPANDABLE_TEXTVIEW, "Expandable TextView"));
         list.add(new HolderData(Holder.Type.KEYBOARD_PANEL, "keyboard panel"));
         list.add(new HolderData(Holder.Type.kEEPALIVE, "Keep Alive"));
+        list.add(new HolderData(Holder.Type.NET, "网络库测试"));
         mRecyclerView.setAdapter(new Adapter(this, list));
     }
 
@@ -110,6 +111,7 @@ public class MainActivity extends BaseActivity {
             int EXPANDABLE_TEXTVIEW = 2;
             int KEYBOARD_PANEL = 3;
             int kEEPALIVE = 4;
+            int NET = 5;
         }
 
         private TextView mTextView;
@@ -143,6 +145,10 @@ public class MainActivity extends BaseActivity {
                         }
                         case Type.kEEPALIVE: {
                             KeepLiveDemoActivity.start(v.getContext());
+                            break;
+                        }
+                        case Type.NET: {
+                            NetActivity.start(v.getContext());
                             break;
                         }
                     }

@@ -145,7 +145,7 @@ public class RC4Utils {
     public static String randomRC4Key() {
         Random random = new Random();
         int rand = random.nextInt(100000);
-        String rc4Key = MD5Utils.generateMD5(Integer.toString(rand));
+        String rc4Key = MD5Utils.md5(Integer.toString(rand));
         return rc4Key;
     }
 }

@@ -12,6 +12,21 @@ versions.verticalviewpager = "19.0.1"
 versions.multidex = "1.0.1"
 versions.sharedPreferenceInjector = "1.0.0"
 
+versions.okhttp3 = "3.11.0"
+versions.okhttp3_logger = "3.11.0"
+versions.retrofit2 = "2.2.0"
+
+versions.gson = "2.8.5"
+versions.converter_gson = "2.4.0"
+
+versions.rxjava = "2.1.17"
+versions.rxandroid = "2.0.2"
+versions.adapter_rxjava = "2.4.0"
+
+versions.stetho = "1.5.0"
+versions.stetho_okhttp = "1.5.0"
+
+
 
 def support = [:]
 support.v4 = "com.android.support:support-v4:$versions.support"
@@ -22,6 +37,23 @@ support.v7 = "com.android.support:appcompat-v7:$versions.support"
 support.design = "com.android.support:design:$versions.support"
 support.annotations = "com.android.support:support-annotations:$versions.support"
 ext.deps.support = support
+
+def net = [:]
+net.okhttp3 = "com.squareup.okhttp3:okhttp:$versions.okhttp3"
+net.okhttp3_logger = "com.squareup.okhttp3:logging-interceptor:$versions.okhttp3_logger"
+net.retrofit2 = "com.squareup.retrofit2:retrofit:$versions.retrofit2"
+ext.deps.net = net
+
+def gson = [:]
+gson.gson = "com.google.code.gson:gson:$versions.gson"
+gson.converter_gson = "com.squareup.retrofit2:converter-gson:$versions.converter_gson"
+ext.deps.gson = gson
+
+def rx = [:]
+rx.rxjava = "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+rx.rxandroid = "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
+rx.adapter_rxjava = "com.squareup.retrofit2:adapter-rxjava2:$versions.adapter_rxjava"
+ext.deps.rx = rx
 
 def room = [:]
 room.runtime = "android.arch.persistence.room:runtime:$versions.arch"
@@ -48,4 +80,23 @@ ext.deps.glide = "com.github.bumptech.glide:glide:$versions.glide"
 ext.deps.exoplayer = "com.google.android.exoplayer:exoplayer:$versions.exoplayer"
 ext.deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 ext.deps.verticalviewpager = "com.github.castorflex.verticalviewpager:library:$versions.verticalviewpager"
+
+
+
+def debugTools = [:]
+debugTools.stetho = "com.facebook.stetho:stetho:$versions.stetho"
+debugTools.stetho_okhttp3 = "com.facebook.stetho:stetho-okhttp3:$versions.stetho_okhttp"
+ext.deps.debugTools = debugTools
+
+
+
+def android_params = [:]
+android_params.compile_sdk = 27
+android_params.min_sdkd = 17
+android_params.target_sdk = 27
+android_params.build_tools = "27.0.3"
+
+android_params.source_java = JavaVersion.VERSION_1_8
+android_params.target_java = JavaVersion.VERSION_1_8
+ext.android_params = android_params
 
