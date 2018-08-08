@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.code.base.BaseActivity;
+import com.effective.android.base.activity.BaseActivity;
 import com.example.code.exoplayer.ExoActivity;
 import com.example.code.html.HTMLActivity;
 import com.example.code.kbpanel.test.KeyboardActivity;

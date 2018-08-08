@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
+import com.effective.android.base.activity.BaseActivity;
 import com.example.code.R;
-import com.example.code.base.BaseActivity;
 import com.example.code.databinding.ActivityExoLayoutBinding;
 
 /**

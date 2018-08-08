@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import com.bumptech.glide.gifdecoder.GifDecoder;
 import com.bumptech.glide.load.Transformation;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.example.code.util.ReflectionUtils;
+import com.effective.android.base.util.ReflectionUtils;
 
 /**
  * Created by yummyLau on 2018/4/26.

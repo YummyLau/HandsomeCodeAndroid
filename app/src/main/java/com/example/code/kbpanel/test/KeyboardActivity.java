@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.effective.android.base.activity.BaseActivity;
+import com.effective.android.base.util.system.ScreenUtils;
 import com.example.code.R;
-import com.example.code.base.BaseActivity;
 import com.example.code.databinding.ActivityKeyboardLayoutBinding;
 import com.example.code.kbpanel.PanelSwitchHelper;
-import com.example.code.util.system.ScreenUtils;
 
 /**
  * 测试

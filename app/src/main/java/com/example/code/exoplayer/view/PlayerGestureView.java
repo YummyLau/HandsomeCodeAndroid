@@ -14,12 +14,12 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.effective.android.base.util.system.ActivityUtils;
 import com.example.code.R;
 import com.example.code.exoplayer.annotations.GestureAction;
 import com.example.code.exoplayer.interfaces.support.IGestureAction;
 import com.example.code.setting.AudioSetting;
 import com.example.code.setting.BrightnessSetting;
-import com.example.code.util.system.ActivityUtils;
 
 /**
  * 手势层

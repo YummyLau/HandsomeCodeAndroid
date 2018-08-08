@@ -18,8 +18,8 @@ import com.bumptech.glide.load.resource.gif.GifOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.effective.android.base.util.system.ActivityUtils;
 import com.example.code.glide.interfaces.IImageLoader;
-import com.example.code.util.system.ActivityUtils;
 
 /**
  * Created by yummyLau on 2018/4/26.

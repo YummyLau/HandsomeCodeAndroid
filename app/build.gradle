@@ -41,7 +41,6 @@ dependencies {
     "$androidTestImplementation" 'com.android.support.test:runner:1.0.1'
     "$androidTestImplementation" 'com.android.support.test.espresso:espresso-core:3.0.1'
     "$api" deps.support.v4
-    "$api" deps.support.v7
     "$api" deps.support.palette
     "$api" deps.support.recyclerview
     "$api" deps.support.multidex
@@ -54,12 +53,13 @@ dependencies {
     "$api" deps.glide
     "$api" deps.exoplayer
     "$api" deps.verticalviewpager
+
     "$api" deps.spInjector.core
-    "$api" deps.spInjector.core
+    "$api" deps.spInjector.annotation
     annotationProcessor deps.spInjector.compiler
 
 
-
     "$implementation" project(':lib-net')
+    "$implementation" project(':lib-base')
 
 }

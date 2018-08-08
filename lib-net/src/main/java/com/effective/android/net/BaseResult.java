@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * 自主使用 postman 自定义 mockserver 测试
  * 统一管理返回值
  * {
- * "code" : 2000,
+ * "code" : 200,
  * "message" : "ok",
  * "data" : {
  * "a" : "a",

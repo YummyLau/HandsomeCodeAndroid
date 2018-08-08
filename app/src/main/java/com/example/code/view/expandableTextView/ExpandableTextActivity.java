@@ -1,16 +1,14 @@
 package com.example.code.view.expandableTextView;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.effective.android.base.activity.BaseActivity;
 import com.example.code.R;
-import com.example.code.base.BaseActivity;
 import com.example.code.databinding.ActivityExpandableTextLayoutBinding;
-import com.example.code.exoplayer.ExoActivity;
 import com.example.code.view.textview.SpanTouchListenerCompat;
 
 /**
