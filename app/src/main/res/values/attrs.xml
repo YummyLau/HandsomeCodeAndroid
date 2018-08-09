@@ -16,4 +16,17 @@
         <attr name="expand_text" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="XfermodeImageView">
+        <attr name="corner_radius_top_left" format="dimension" />
+        <attr name="corner_radius_top_right" format="dimension" />
+        <attr name="corner_radius_bottom_left" format="dimension" />
+        <attr name="corner_radius_bottom_right" format="dimension" />
+        <attr name="corner_radius" format="dimension" />
+        <attr name="type">
+            <enum name="circle" value="0" />
+            <enum name="round" value="1" />
+        </attr>
+        <attr name="src" format="reference" />
+    </declare-styleable>
+
 </resources>
