@@ -15,11 +15,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.effective.android.base.util.system.ActivityUtils;
+import com.effective.android.base.util.system.AudioSettingUtils;
+import com.effective.android.base.util.system.BrightnessSettingUtils;
 import com.example.code.R;
 import com.example.code.exoplayer.annotations.GestureAction;
 import com.example.code.exoplayer.interfaces.support.IGestureAction;
-import com.example.code.setting.AudioSetting;
-import com.example.code.setting.BrightnessSetting;
 
 /**
  * 手势层
@@ -207,8 +207,8 @@ public class PlayerGestureView extends FrameLayout implements View.OnTouchListen
                 case GestureAction.MODIFY_VOLUME: {
                     if (Math.abs(distanceY) > Math.abs(distanceX)) {
 
-                        int maxVolume = AudioSetting.getMaxVolume(getContext(), AudioSetting.AudioType.MUSIC);
-                        int currentVolume = AudioSetting.getCurrentVolume(getContext(), AudioSetting.AudioType.MUSIC);
+                        int maxVolume = AudioSettingUtils.getMaxVolume(getContext(), AudioSettingUtils.AudioType.MUSIC);
+                        int currentVolume = AudioSettingUtils.getCurrentVolume(getContext(), AudioSettingUtils.AudioType.MUSIC);
 
                         int largeMaxVolume = maxVolume * MODIFY_LARGE_UNIT;
                         int largeCurrentVolume = currentVolume * MODIFY_LARGE_UNIT + currentModifyVolume;
@@ -229,7 +229,7 @@ public class PlayerGestureView extends FrameLayout implements View.OnTouchListen
                         volumeProgress.setProgress(largeCurrentVolume * 100 / largeMaxVolume);
                         volumeImg.setImageResource(volumeProgress.getProgress() == 0 ?
                                 R.drawable.exoplayer_control_disable_volume_icon : R.drawable.exoplayer_control_volume_icon);
-                        AudioSetting.setCurrentVolume(getContext(), AudioSetting.AudioType.MUSIC, realVolume, 0);
+                        AudioSettingUtils.setCurrentVolume(getContext(), AudioSettingUtils.AudioType.MUSIC, realVolume, 0);
                     }
                     break;
                 }
@@ -242,9 +242,9 @@ public class PlayerGestureView extends FrameLayout implements View.OnTouchListen
                         if (activity == null) {
                             return false;
                         }
-                        float brightness = BrightnessSetting.getWindowBrightness(activity);
+                        float brightness = BrightnessSettingUtils.getWindowBrightness(activity);
                         if (brightness < 0) {
-                            brightness = BrightnessSetting.getScreenBrightness(activity) * 1.0f / 255;
+                            brightness = BrightnessSettingUtils.getScreenBrightness(activity) * 1.0f / 255;
                         }
 
                         brightness = brightness + distanceY * 1.0f / areaHeight;
@@ -255,7 +255,7 @@ public class PlayerGestureView extends FrameLayout implements View.OnTouchListen
                         }
 
                         brightProgress.setProgress((int) (brightness * 100));
-                        BrightnessSetting.setWindowBrightness(activity, brightness);
+                        BrightnessSettingUtils.setWindowBrightness(activity, brightness);
                     }
                     break;
                 }

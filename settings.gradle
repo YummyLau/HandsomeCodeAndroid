@@ -1,1 +1,1 @@
-include ':app', ':lib-net', ':lib-base'
+include ':app', ':lib-net', ':lib-base', ':lib-store', ':component-lib',  ':component-list', ':component-imageloader'
