@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.effective.android.base.activity.BaseActivity;
 
 /**
+ *
  * onAttach
  * onCreate
  * onCreateView

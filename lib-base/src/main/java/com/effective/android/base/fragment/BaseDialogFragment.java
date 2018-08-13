@@ -17,6 +17,7 @@ import android.view.Window;
 import com.effective.android.base.activity.BaseActivity;
 
 /**
+ *
  * 作为dialog，可以灵活显示，当做fragment成为activity一部分，或者弹出在activity之上
  * 且在屏幕旋转时传统的dialog无法保存数据，且activity销毁前不允许有对话框未关闭导致crash
  * Created by yummylau on 2018/8/12.
