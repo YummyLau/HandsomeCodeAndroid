@@ -1,4 +1,4 @@
-package com.effective.android.base.util;
+package com.effective.android.base.util.file;
 
 import android.os.Environment;
 import android.os.StatFs;
@@ -13,8 +13,7 @@ import java.io.FileOutputStream;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public class SDCardUtils {
-
+public class SdcardUtils {
 
     /**
      * 获取设备SD卡是否可用

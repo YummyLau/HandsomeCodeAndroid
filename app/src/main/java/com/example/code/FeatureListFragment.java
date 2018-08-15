@@ -5,8 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,46 +14,46 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.effective.android.base.fragment.BaseFragment;
+import com.example.code.databinding.FragmentFeatureListBinding;
 import com.example.code.exoplayer.ExoActivity;
 import com.example.code.html.HTMLActivity;
 import com.example.code.keeplive.KeepLiveDemoActivity;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeatureListFragment extends Fragment {
+public class FeatureListFragment extends BaseFragment<FragmentFeatureListBinding> {
 
-    private View root;
-    private RecyclerView mRecyclerView;
 
     public static FeatureListFragment newInstance() {
         return new FeatureListFragment();
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.fragment_feature_list, container, false);
+    public int getLayoutRes() {
+        return R.layout.fragment_feature_list;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         initView();
         initData();
-        return root;
     }
 
     private void initView() {
-        mRecyclerView = root.findViewById(R.id.feature_list);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+        binding.featureList.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.refreshLayout.setOnRefreshListener((RefreshLayout refreshLayout) -> {
 
-            @Override
-            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                super.onDraw(c, parent, state);
-                c.drawARGB(0, 0, 0, 0);
-            }
+        });
+        binding.refreshLayout.setOnLoadMoreListener((RefreshLayout refreshLayout) -> {
 
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-                outRect.set(0, 0, 0, 20);
-            }
         });
     }
 
@@ -63,8 +63,7 @@ public class FeatureListFragment extends Fragment {
         list.add(new HolderData(Holder.Type.EXOPLAYER, "ExoPlayer 例子"));
         list.add(new HolderData(Holder.Type.HTML, "HTML解析 例子"));
         list.add(new HolderData(Holder.Type.kEEPALIVE, "Keep Alive"));
-        list.add(new HolderData(Holder.Type.NET, "网络库测试"));
-        mRecyclerView.setAdapter(new Adapter(getContext(), list));
+        binding.featureList.setAdapter(new Adapter(getContext(), list));
     }
 
     public static class Adapter extends RecyclerView.Adapter<Holder> {
@@ -106,7 +105,6 @@ public class FeatureListFragment extends Fragment {
             int EXOPLAYER = 0;
             int HTML = 1;
             int kEEPALIVE = 4;
-            int NET = 5;
         }
 
         private TextView mTextView;
@@ -132,10 +130,6 @@ public class FeatureListFragment extends Fragment {
                         }
                         case Holder.Type.kEEPALIVE: {
                             KeepLiveDemoActivity.start(v.getContext());
-                            break;
-                        }
-                        case Holder.Type.NET: {
-                            NetActivity.start(v.getContext());
                             break;
                         }
                     }

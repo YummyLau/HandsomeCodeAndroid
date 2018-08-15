@@ -1,6 +1,7 @@
 package com.effective.android.base.fragment;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -14,29 +15,28 @@ import android.view.ViewGroup;
 import com.effective.android.base.activity.BaseActivity;
 
 /**
- *
  * onAttach
  * onCreate
  * onCreateView
  * onActivityCreate
- *
+ * <p>
  * onStart
- *
+ * <p>
  * onResume
- *
+ * <p>
  * onPause
- *
+ * <p>
  * onStop
- *
+ * <p>
  * onDestroyView
  * onDestroy
  * onDetach
- *
+ * <p>
  * 1. 在activity#onCreate中创建fragment，需要考虑是否activity重启，所以需要判断savedInstanceState是否为null
  * 2. 如果启动另一个fragment并想获取返回的数据，则可以使用 setTargetFragment，重写 onActivityResult 获取
- *
+ * <p>
  * https://blog.csdn.net/lmj623565791/article/details/42628537
- *
+ * <p>
  * Created by yummylau on 2018/8/12.
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
@@ -45,7 +45,6 @@ import com.effective.android.base.activity.BaseActivity;
 public abstract class BaseFragment<DataBinding extends ViewDataBinding> extends Fragment {
 
     protected DataBinding binding;
-    protected View contentView;
     protected BaseActivity attachActivity;
 
     @Override
@@ -67,11 +66,11 @@ public abstract class BaseFragment<DataBinding extends ViewDataBinding> extends 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (contentView == null) {
-            contentView = inflater.inflate(getLayoutRes(), container, false);
+        if (binding == null) {
+            binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false);
         } else {
-            ((ViewGroup) contentView.getParent()).removeView(contentView);
+            ((ViewGroup) binding.getRoot().getParent()).removeView(binding.getRoot());
         }
-        return contentView;
+        return binding.getRoot();
     }
 }

@@ -26,6 +26,9 @@ versions.adapter_rxjava = "2.4.0"
 versions.stetho = "1.5.0"
 versions.stetho_okhttp = "1.5.0"
 
+versions.vlayout = "1.2.8"
+versions.smartrefresh = "1.1.0-alpha-14"
+
 
 
 def support = [:]
@@ -81,6 +84,9 @@ ext.deps.glide = "com.github.bumptech.glide:glide:$versions.glide"
 ext.deps.exoplayer = "com.google.android.exoplayer:exoplayer:$versions.exoplayer"
 ext.deps.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
 ext.deps.verticalviewpager = "com.github.castorflex.verticalviewpager:library:$versions.verticalviewpager"
+
+ext.deps.vlayout = "com.alibaba.android:vlayout:$versions.vlayout"+"@aar"
+ext.deps.smartrefresh = "com.scwang.smartrefresh:SmartRefreshLayout:$versions.smartrefresh"
 
 
 

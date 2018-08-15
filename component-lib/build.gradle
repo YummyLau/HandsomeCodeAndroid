@@ -30,7 +30,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    "$implementation" project(':lib-net')
-    "$implementation" project(':lib-store')
-    "$implementation" project(':lib-base')
+    "$api" project(':lib-net')
+    "$api" project(':lib-store')
+    "$api" project(':lib-base')
 }

@@ -1,4 +1,4 @@
-package com.effective.android.base.crash;
+package com.effective.android.crash;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

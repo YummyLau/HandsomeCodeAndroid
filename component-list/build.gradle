@@ -29,5 +29,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':component-lib')
+    
+    "$implementation" project(':component-lib')
+    "$implementation" deps.smartrefresh
+    "$implementation" (deps.vlayout){
+        transitive = true
+    }
 }

@@ -1,4 +1,4 @@
-package com.effective.android.base.crash;
+package com.effective.android.crash;
 
 import com.google.gson.annotations.SerializedName;
 

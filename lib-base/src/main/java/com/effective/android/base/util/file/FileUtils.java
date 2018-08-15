@@ -1,4 +1,4 @@
-package com.effective.android.base.util;
+package com.effective.android.base.util.file;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
@@ -447,9 +447,4 @@ public class FileUtils {
         }
         return content;
     }
-
-    public static void copy(String fileName,byte[] bytes){
-
-    }
-
 }

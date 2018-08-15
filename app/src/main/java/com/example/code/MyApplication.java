@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.effective.android.component.ComponentManager;
+import com.effective.android.crash.CrashComponentImpl;
 import com.effective.android.net.okhttp.HttpClient;
 
 /**
@@ -24,6 +26,11 @@ public class MyApplication extends MultiDexApplication {
         super.onCreate();
         application = this;
         HttpClient.init(this, BuildConfig.DEBUG);
+
+        //组件绑定
+        ComponentManager.bind(this, CrashComponentImpl.class);
+
+        //模块添加
     }
 
     @Override
