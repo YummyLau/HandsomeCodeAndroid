@@ -1,1 +1,1 @@
-include ':app', ':lib-net', ':lib-base', ':lib-store', ':component-lib',  ':component-imageloader', ':component-crash'
+include ':app', ':lib-net', ':lib-base', ':lib-store', ':component-lib',':component-imageloader', ':component-crash', ':build-gradle'
