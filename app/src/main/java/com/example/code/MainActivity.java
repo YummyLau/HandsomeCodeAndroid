@@ -17,7 +17,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, FeatureListFragment.newInstance(), "").commit();
+        throw new RuntimeException("");
+//        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, FeatureListFragment.newInstance(), "").commit();
     }
 
 }

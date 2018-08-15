@@ -10,6 +10,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -45,6 +47,15 @@ public class FileUtils {
     public static final int SIZE_TYPE_KB = 0x0002;
     public static final int SIZE_TYPE_MB = 0x0003;
     public static final int SIZE_TYPE_GB = 0x0004;
+
+
+    @Nullable
+    public static File getFile(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return null;
+        }
+        return new File(filePath);
+    }
 
     /**
      * 判断文件是否存在
@@ -365,7 +376,8 @@ public class FileUtils {
     }
 
 
-    /**于
+    /**
+     * 于
      * 把字符串以文件形式保存特定路径中
      *
      * @param str
@@ -395,6 +407,7 @@ public class FileUtils {
 
     /**
      * 从压缩文件中读取特定的文件，以字符串的形式返回
+     *
      * @param assetManager
      * @param zipFileName
      * @param fileName

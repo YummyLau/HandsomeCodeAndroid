@@ -21,7 +21,7 @@ public class SdcardUtils {
      * @return true : 可用<br>false : 不可用
      */
     public static boolean isSDCardEnable() {
-        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable();
     }
 
     /**

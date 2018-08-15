@@ -6,8 +6,8 @@ import android.text.TextUtils;
 
 /**
  * 文件目录管理
- * getCacheDir 和  getFilesDir 分别对应运行时手机数据保存使用
- * getExternalCacheDir 和  getExternalFilesDir 一般用户主动保存的数据，该数据能保证写在的时候自动被删除，所以一般数据不要自己在sd卡上建立目录，遵循规范。
+ * getCacheDir 和  getFilesDir 分别对应运行时手机数据保存使用，需要root查看
+ * getExternalCacheDir 和  getExternalFilesDir 一般用户主动保存的数据，无需root可以查看，该数据能保证写在的时候自动被删除，所以一般数据不要自己在sd卡上建立目录，遵循规范。
  * getExternalCacheDir 对应应用详情中的 "清除缓存"
  * getExternalFilesDir 对应应用详情中的 "清除数据"
  * <p>
