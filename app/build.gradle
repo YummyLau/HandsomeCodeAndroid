@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+//apply plugin: 'com.effective.android.comgradle'
 
 android {
     compileSdkVersion android_params.compile_sdk

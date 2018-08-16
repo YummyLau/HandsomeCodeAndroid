@@ -1,4 +1,4 @@
-package com.effective.android.gradle
+package com.effective.android.comgradle
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager

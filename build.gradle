@@ -1,20 +1,26 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     apply from: 'versions.gradle'
     apply from: 'gradleCompat.gradle'
     
     repositories {
+        maven {
+            url uri('./repo')
+        }
         google()
         jcenter()
     }
     dependencies {
+        classpath 'com.effective.android.comgradle:build-gradle:1.0.1'
         classpath deps.android_gradle_plugin
     }
 }
 
 allprojects {
     repositories {
+        maven {
+            url uri('./repo')
+        }
         google()
         jcenter()
     }

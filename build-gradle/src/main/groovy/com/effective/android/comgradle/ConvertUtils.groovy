@@ -1,4 +1,4 @@
-package com.effective.android.gradle
+package com.effective.android.comgradle
 
 import com.android.SdkConstants
 import com.android.build.api.transform.TransformInput

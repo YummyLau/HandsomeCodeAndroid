@@ -1,4 +1,4 @@
-package com.effective.android.gradle
+package com.effective.android.comgradle.exten
 
 public class ComExtension {
 

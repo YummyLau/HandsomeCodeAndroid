@@ -1,10 +1,12 @@
-package com.effective.android.gradle.exten
+package com.effective.android.comgradle
 
-import com.effective.android.gradle.ComCodeTransform
-import com.effective.android.gradle.ComExtension
+import com.effective.android.comgradle.exten.ComExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
+/**
+ * 编写 ComBuild 插件
+ */
 class ComBuild implements Plugin<Project> {
 
     //默认是app，直接运行assembleRelease的时候，等同于运行app:assembleRelease
