@@ -3,6 +3,7 @@ package com.effective.android.base.fragment;
 import android.app.Dialog;
 import android.app.WallpaperInfo;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -29,7 +30,6 @@ import com.effective.android.base.activity.BaseActivity;
 public abstract class BaseDialogFragment<DataBinding extends ViewDataBinding> extends DialogFragment {
 
     protected DataBinding binding;
-    protected View contentView;
     protected BaseActivity attachActivity;
 
     @Override
@@ -52,17 +52,11 @@ public abstract class BaseDialogFragment<DataBinding extends ViewDataBinding> ex
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (contentView == null) {
-            contentView = inflater.inflate(getLayoutRes(), container, false);
+        if (binding == null) {
+            binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false);
         } else {
-            ((ViewGroup) contentView.getParent()).removeView(contentView);
+            ((ViewGroup) binding.getRoot().getParent()).removeView(binding.getRoot());
         }
-        return contentView;
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return super.onCreateDialog(savedInstanceState);
+        return binding.getRoot();
     }
 }

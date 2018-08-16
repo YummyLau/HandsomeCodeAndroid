@@ -248,8 +248,7 @@ public class DeviceUtils {
      * @return 设备厂商
      */
     public static String getManufacturer() {
-        String MANUFACTURER = Build.MANUFACTURER;
-        return MANUFACTURER;
+        return Build.MANUFACTURER;
     }
 
     /**

@@ -1,1 +1,2 @@
-include ':app', ':lib-net', ':lib-base', ':lib-store', ':component-lib',  ':component-list', ':component-imageloader', ':component-jsbridge'
+include ':app', ':lib-net', ':lib-base', ':lib-store', ':component-lib',':component-imageloader', ':component-crash', ':build-gradle', ':feature-a'
+include ':lib-router:router-annotation', ':lib-router:router-compiler', ':lib-router:router-core'

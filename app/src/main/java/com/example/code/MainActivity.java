@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import com.effective.android.base.activity.BaseActivity;
 
-
 public class MainActivity extends BaseActivity {
 
     @NonNull
@@ -17,6 +16,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        throw new RuntimeException("");
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, FeatureListFragment.newInstance(), "").commit();
     }
 

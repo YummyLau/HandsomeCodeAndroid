@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+//apply plugin: 'com.effective.android.comgradle'
 
 android {
     compileSdkVersion android_params.compile_sdk
@@ -44,7 +45,6 @@ dependencies {
     "$api" deps.support.palette
     "$api" deps.support.recyclerview
     "$api" deps.support.multidex
-    "$api" deps.support.design
     "$api" deps.room.runtime
     annotationProcessor deps.room.compiler
     "$api" deps.lifecycle.extensions
@@ -58,8 +58,11 @@ dependencies {
     "$api" deps.spInjector.annotation
     annotationProcessor deps.spInjector.compiler
 
+    
+    "$implementation" project(':component-lib')
+    "$implementation" project(':component-crash')
 
-    "$implementation" project(':lib-net')
-    "$implementation" project(':lib-base')
 
+    "$implementation" project(':lib-router:router-core')
+    annotationProcessor project(':lib-router:router-compiler')
 }

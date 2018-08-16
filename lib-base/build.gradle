@@ -34,6 +34,9 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     "$api" deps.support.v7
     "$api" deps.support.design
-
     "$api" deps.gson.gson
+    "$api" deps.smartrefresh
+    "$api" (deps.vlayout){
+        transitive = true
+    }
 }
