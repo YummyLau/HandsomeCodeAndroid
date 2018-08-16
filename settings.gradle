@@ -1,1 +1,1 @@
-include ':app', ':lib-net', ':lib-base', ':lib-store', ':component-lib',  ':component-list', ':component-imageloader'
+include ':app', ':lib-net', ':lib-base', ':lib-store', ':component-lib',  ':component-list', ':component-imageloader', ':component-jsbridge'
