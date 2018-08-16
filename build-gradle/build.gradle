@@ -2,7 +2,7 @@ apply plugin: 'groovy'
 //apply maven 发布插件
 apply plugin: 'maven'
 
-group = 'com.effective.android.comgradle'
+group = 'com.effective.plugin.component'
 version = '1.0.1'
 
 //设置本地发布路径
@@ -32,6 +32,7 @@ sourceSets {
         }
     }
 }
+
 
 repositories {
     mavenCentral()

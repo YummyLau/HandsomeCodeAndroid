@@ -58,11 +58,11 @@ dependencies {
     "$api" deps.spInjector.annotation
     annotationProcessor deps.spInjector.compiler
 
-
-    "$implementation" project(':lib-net')
-    "$implementation" project(':lib-base')
     
     "$implementation" project(':component-lib')
     "$implementation" project(':component-crash')
 
+
+    "$implementation" project(':lib-router:router-core')
+    annotationProcessor project(':lib-router:router-compiler')
 }

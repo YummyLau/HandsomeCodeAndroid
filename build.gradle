@@ -11,7 +11,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.effective.android.comgradle:build-gradle:1.0.1'
+        classpath 'com.effective.plugin.component:build-gradle:1.0.1'
         classpath deps.android_gradle_plugin
     }
 }
