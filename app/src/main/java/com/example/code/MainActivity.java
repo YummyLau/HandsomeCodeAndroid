@@ -3,9 +3,11 @@ package com.example.code;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 
-import com.effective.android.base.activity.BaseActivity;
+import com.effective.android.base.activity.BaseBindingActivity;
+import com.effective.router.annotation.RouteNode;
 
-public class MainActivity extends BaseActivity {
+@RouteNode(path = "/main",desc = "主app页面")
+public class MainActivity extends BaseBindingActivity {
 
     @NonNull
     @Override

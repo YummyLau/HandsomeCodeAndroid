@@ -9,7 +9,7 @@ import org.gradle.api.Project
 class ComponentPlugin implements Plugin<Project> {
 
     private static final String TAG = "ComponentPlugin -- "
-    private static final String MAIN_MODULE_NAME = "mainmodulename"
+    private static final String MAIN_MODULE_NAME = "mainModuleName"
 
     //默认是app，直接运行assembleRelease的时候，等同于运行app:assembleRelease
     String compileModule = "app"
@@ -22,6 +22,7 @@ class ComponentPlugin implements Plugin<Project> {
         String taskNames = project.gradle.startParameter.taskNames.toString()
         System.out.println(TAG + "taskNames is " + taskNames)
 
+        //获取当前运行的模块
         String module = project.path.replace(":", "")
         System.out.println(TAG + "current module is " + module)
 
@@ -42,8 +43,7 @@ class ComponentPlugin implements Plugin<Project> {
 
 
         if (isRunAlone && assembleTask.isAssemble) {
-            //对于要编译的组件和主项目，isRunAlone修改为true，其他组件都强制修改为false
-            //这就意味着组件不能引用主项目，这在层级结构里面也是这么规定的
+            //如果运行的模块就是app模块，或者当前运行的模块就是我们配置的mainmodulename，则默认需要单独运行，其他组件强制修改为false
             if (module.equals(compileModule) || module.equals(mainModuleName)) {
                 isRunAlone = true
             } else {
@@ -98,7 +98,7 @@ class ComponentPlugin implements Plugin<Project> {
                 && !assembleTask.modules.get(0).equals("all")) {
             compileModule = assembleTask.modules.get(0)
         } else {
-            compileModule = project.rootProject.property("mainmodulename")
+            compileModule = project.rootProject.property(MAIN_MODULE_NAME)
         }
         if (compileModule == null || compileModule.trim().length() <= 0) {
             compileModule = "app"
@@ -140,9 +140,9 @@ class ComponentPlugin implements Plugin<Project> {
     private void compileComponents(AssembleTask assembleTask, Project project) {
         String components
         if (assembleTask.isDebug) {
-            components = (String) project.properties.get("debugComponent")
+            components = (String) project.properties.get("debugCompileComponent")
         } else {
-            components = (String) project.properties.get("compileComponent")
+            components = (String) project.properties.get("releaseCompileComponent")
         }
 
         if (components == null || components.length() == 0) {
@@ -162,14 +162,14 @@ class ComponentPlugin implements Plugin<Project> {
                  * compileComponent=com.luojilab.reader:readercomponent:1.0.0
                  * 注意，前提是已经将组件aar文件发布到maven上，并配置了相应的repositories
                  */
-                project.dependencies.add("compile", str)
+                project.dependencies.add("implementation", str)
                 System.out.println("add dependencies lib  : " + str)
             } else {
                 /**
                  * 示例语法:module
                  * compileComponent=readercomponent,sharecomponent
                  */
-                project.dependencies.add("compile", project.project(':' + str))
+                project.dependencies.add("implementation", project.project(':' + str))
                 System.out.println("add dependencies project : " + str)
             }
         }

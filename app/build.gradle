@@ -1,5 +1,4 @@
-apply plugin: 'com.android.application'
-//apply plugin: 'com.effective.android.comgradle'
+apply plugin: 'com.effective.plugin.component'
 
 android {
     compileSdkVersion android_params.compile_sdk
@@ -17,10 +16,9 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString(),host: "app"]
             }
         }
-
     }
     buildTypes {
         release {
@@ -42,7 +40,7 @@ dependencies {
     "$androidTestImplementation" 'com.android.support.test:runner:1.0.1'
     "$androidTestImplementation" 'com.android.support.test.espresso:espresso-core:3.0.1'
     "$api" deps.support.v4
-    "$api" deps.support.palette
+
     "$api" deps.support.recyclerview
     "$api" deps.support.multidex
     "$api" deps.room.runtime
@@ -50,19 +48,14 @@ dependencies {
     "$api" deps.lifecycle.extensions
     "$api" deps.lifecycle.runtime
     annotationProcessor deps.lifecycle.compiler
-    "$api" deps.glide
-    "$api" deps.exoplayer
-    "$api" deps.verticalviewpager
-
-    "$api" deps.spInjector.core
-    "$api" deps.spInjector.annotation
-    annotationProcessor deps.spInjector.compiler
-
-    
-    "$implementation" project(':component-lib')
-    "$implementation" project(':component-crash')
 
 
-    "$implementation" project(':lib-router:router-core')
-    annotationProcessor project(':lib-router:router-compiler')
+
+    "$implementation" project(':router:router-core')
+    annotationProcessor project(':router:router-compiler')
+}
+
+componentBuild {
+    applicationName = 'com.example.code.MyApplication'
+    isRegisterComponentAuto = true
 }

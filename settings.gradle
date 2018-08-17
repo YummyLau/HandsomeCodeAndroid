@@ -1,2 +1,5 @@
-include ':app', ':lib-net', ':lib-base', ':lib-store', ':component-lib',':component-imageloader', ':component-crash', ':build-gradle', ':feature-a'
-include ':lib-router:router-annotation', ':lib-router:router-compiler', ':lib-router:router-core'
+include ':library:lib-base',':library:lib-net',':library:lib-store', ':feature-exoplayer', ':imageloader', ':video', ':jswebview'
+include ':router:router-annotation',':router:router-compiler',':router:router-core',':router:component-lib'
+include ':feature-a'
+include ':service:imageloader',':service:video',':service:jswebview'
+include ':app'

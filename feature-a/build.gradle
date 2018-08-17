@@ -3,6 +3,10 @@ apply plugin: 'com.effective.plugin.component'
 android {
     compileSdkVersion android_params.compile_sdk
 
+    dataBinding {
+        enabled = true
+    }
+
     defaultConfig {
         minSdkVersion android_params.min_sdkd
         targetSdkVersion android_params.target_sdk
@@ -36,11 +40,11 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':lib-router:router-core')
-    annotationProcessor project(':lib-router:router-compiler')
+    implementation project(':router:router-core')
+    annotationProcessor project(':router:router-compiler')
 }
 
 componentBuild {
-    applicationName = 'com.example.feature.a.runalone.FeatureAApplication'
-    isRegisterCompoAuto = true
+    applicationName = 'com.example.feature.a.runalone.TextComponentLike'
+    isRegisterComponentAuto = true
 }

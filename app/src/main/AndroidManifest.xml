@@ -22,32 +22,32 @@
 
         <activity android:name=".exoplayer.ExoActivity" />
 
-        <activity android:name=".html.HTMLActivity" />
+        <activity android:name="com.effective.android.video.html.HTMLActivity" />
 
 
 
         <!-- keep live -->
-        <activity android:name=".keeplive.KeepLiveDemoActivity" />
+        <activity android:name="com.effective.android.base.keeplive.KeepLiveDemoActivity" />
 
         <!-- keep live one px -->
         <activity
-            android:name=".keeplive.onepx.KeepLiveActivity"
+            android:name="com.effective.android.base.keeplive.onepx.KeepLiveActivity"
             android:excludeFromRecents="true"
             android:exported="false"
             android:finishOnTaskLaunch="false"
             android:taskAffinity="com.sososeen09.daemon.keep.live"
             android:theme="@style/KeepLiveTheme" />
         <service
-            android:name=".keeplive.onepx.KeepLiveService"
+            android:name="com.effective.android.base.keeplive.onepx.KeepLiveService"
             android:process=":live_service" />
 
 
         <!-- keep live foreground notification -->
-        <service android:name=".keeplive.notification.KeepLiveService" />
-        <service android:name=".keeplive.notification.KeepLiveService$InnerService" />
+        <service android:name="com.effective.android.base.keeplive.notification.KeepLiveService" />
+        <service android:name="com.effective.android.base.keeplive.notification.KeepLiveService$InnerService" />
 
         <!-- keep live job -->
-        <service android:name=".keeplive.job.KeepLiveJob" />
+        <service android:name="com.effective.android.base.keeplive.job.KeepLiveJob" />
 
 
 

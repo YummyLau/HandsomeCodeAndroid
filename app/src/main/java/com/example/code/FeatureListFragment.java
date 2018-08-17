@@ -15,15 +15,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.effective.android.base.fragment.BaseFragment;
-import com.effective.router.core.service.JsonService;
 import com.effective.router.core.ui.UIRouter;
 import com.example.code.databinding.FragmentFeatureListBinding;
-import com.example.code.exoplayer.ExoActivity;
-import com.example.code.html.HTMLActivity;
-import com.example.code.keeplive.KeepLiveDemoActivity;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +56,8 @@ public class FeatureListFragment extends BaseFragment<FragmentFeatureListBinding
 
     private void initData() {
         List<HolderData> list = new ArrayList<>();
-        list.add(new HolderData(Holder.Type.EXOPLAYER, "ExoPlayer 例子"));
-        list.add(new HolderData(Holder.Type.HTML, "HTML解析 例子"));
-        list.add(new HolderData(Holder.Type.kEEPALIVE, "Keep Alive"));
+        list.add(new HolderData(Holder.Type.TO_FEATURE_A, "跳转到模块a"));
+        list.add(new HolderData(Holder.Type.TO_FEATURE_B, "跳转到模块b"));
         binding.featureList.setAdapter(new Adapter(getContext(), list));
     }
 
@@ -102,11 +95,10 @@ public class FeatureListFragment extends BaseFragment<FragmentFeatureListBinding
 
     public static class Holder extends RecyclerView.ViewHolder {
 
-        @IntDef({Holder.Type.EXOPLAYER})
+        @IntDef({Holder.Type.TO_FEATURE_A,Holder.Type.TO_FEATURE_B})
         public @interface Type {
-            int EXOPLAYER = 0;
-            int HTML = 1;
-            int kEEPALIVE = 4;
+            int TO_FEATURE_A = 0;
+            int TO_FEATURE_B = 1;
         }
 
         private TextView mTextView;
@@ -122,17 +114,16 @@ public class FeatureListFragment extends BaseFragment<FragmentFeatureListBinding
                 @Override
                 public void onClick(View v) {
                     switch (holderData.type) {
-                        case Holder.Type.EXOPLAYER: {
-                            ExoActivity.start(v.getContext());
-                            break;
-                        }
-                        case Holder.Type.HTML: {
-                            HTMLActivity.start(v.getContext());
-                            break;
-                        }
-                        case Holder.Type.kEEPALIVE: {
+                        case Holder.Type.TO_FEATURE_A: {
                             Bundle bundle = new Bundle();
-                            bundle.putString("content", "this content from app");
+                            bundle.putString("content", "this content to a from  app");
+                            UIRouter.getInstance().openUri(mTextView.getContext(), "HandsomeCodeAndroid://featurea/test", bundle);
+//                            KeepLiveDemoActivity.start(v.getContext());
+                            break;
+                        }
+                        case Holder.Type.TO_FEATURE_B: {
+                            Bundle bundle = new Bundle();
+                            bundle.putString("content", "tthis content to b from  app");
                             UIRouter.getInstance().openUri(mTextView.getContext(), "HandsomeCodeAndroid://featurea/test", bundle);
 //                            KeepLiveDemoActivity.start(v.getContext());
                             break;

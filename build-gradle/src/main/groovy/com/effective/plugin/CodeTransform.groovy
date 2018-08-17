@@ -12,6 +12,7 @@ class CodeTransform extends Transform {
     private Project project
     ClassPool classPool
     String applicationName
+    private static final String COMPONENT_LIKE = "com.effective.router.core.IComponentLike"
 
     CodeTransform(Project project) {
         this.project = project
@@ -19,7 +20,10 @@ class CodeTransform extends Transform {
 
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
+
+        //获取真实的application
         getRealApplicationName(transformInvocation.getInputs())
+
         classPool = new ClassPool()
         project.android.bootClasspath.each {
             classPool.appendClassPath((String) it.absolutePath)
@@ -28,23 +32,24 @@ class CodeTransform extends Transform {
 
         //要收集的application，一般情况下只有一个
         List<CtClass> applications = new ArrayList<>()
-        //要收集的applicationlikes，一般情况下有几个组件就有几个applicationlike
-        List<CtClass> activators = new ArrayList<>()
+
+        //要收集的componentLikes，一般情况下有几个组件就有几个componentLikes
+        List<CtClass> componentLikes = new ArrayList<>()
 
         for (CtClass ctClass : box) {
             if (isApplication(ctClass)) {
                 applications.add(ctClass)
                 continue
             }
-            if (isActivator(ctClass)) {
-                activators.add(ctClass)
+            if (isComponentLike(ctClass)) {
+                componentLikes.add(ctClass)
             }
         }
         for (CtClass ctClass : applications) {
             System.out.println("application is   " + ctClass.getName())
         }
-        for (CtClass ctClass : activators) {
-            System.out.println("applicationlike is   " + ctClass.getName())
+        for (CtClass ctClass : componentLikes) {
+            System.out.println("componentLike is   " + ctClass.getName())
         }
 
         transformInvocation.inputs.each { TransformInput input ->
@@ -66,8 +71,10 @@ class CodeTransform extends Transform {
             }
             //对类型为“文件夹”的input进行遍历
             input.directoryInputs.each { DirectoryInput directoryInput ->
-                boolean isRegisterCompoAuto = project.extensions.componentBuild.isRegisterCompoAuto
-                if (isRegisterCompoAuto) {
+                boolean isRegisterComponentAuto = project.extensions.componentBuild.isRegisterComponentAuto
+
+                //如果是自动注入组件，则
+                if (isRegisterComponentAuto) {
                     String fileName = directoryInput.file.absolutePath
                     File dir = new File(fileName)
                     dir.eachFileRecurse { File file ->
@@ -78,7 +85,7 @@ class CodeTransform extends Transform {
                         if (classNameTemp.endsWith(".class")) {
                             String className = classNameTemp.substring(1, classNameTemp.length() - 6)
                             if (className.equals(applicationName)) {
-                                injectApplicationCode(applications.get(0), activators, fileName)
+                                injectApplicationCode(applications.get(0), componentLikes, fileName)
                             }
                         }
                     }
@@ -92,7 +99,11 @@ class CodeTransform extends Transform {
         }
     }
 
-
+    /**
+     * 获取 gradle配置的
+     * componentBuild{*     applicationName = "xxxx"
+     *}* @param inputs
+     */
     private void getRealApplicationName(Collection<TransformInput> inputs) {
         applicationName = project.extensions.componentBuild.applicationName
         if (applicationName == null || applicationName.isEmpty()) {
@@ -100,19 +111,24 @@ class CodeTransform extends Transform {
         }
     }
 
-
-    private void injectApplicationCode(CtClass ctClassApplication, List<CtClass> activators, String patch) {
+    /**
+     * 注入application code
+     * @param ctClassApplication
+     * @param componentLikes
+     * @param patch
+     */
+    private void injectApplicationCode(CtClass ctClassApplication, List<CtClass> componentLikes, String patch) {
         System.out.println("injectApplicationCode begin")
         ctClassApplication.defrost()
         try {
             CtMethod attachBaseContextMethod = ctClassApplication.getDeclaredMethod("onCreate", null)
-            attachBaseContextMethod.insertAfter(getAutoLoadComCode(activators))
+            attachBaseContextMethod.insertAfter(getAutoLoadComCode(componentLikes))
         } catch (CannotCompileException | NotFoundException e) {
             StringBuilder methodBody = new StringBuilder()
             methodBody.append("protected void onCreate() {")
             methodBody.append("super.onCreate();")
             methodBody.
-                    append(getAutoLoadComCode(activators))
+                    append(getAutoLoadComCode(componentLikes))
             methodBody.append("}")
             ctClassApplication.addMethod(CtMethod.make(methodBody.toString(), ctClassApplication))
         } catch (Exception e) {
@@ -124,12 +140,16 @@ class CodeTransform extends Transform {
         System.out.println("injectApplicationCode success ")
     }
 
-    private String getAutoLoadComCode(List<CtClass> activators) {
+    /**
+     * 调用所有componentLike的onCreate的代码
+     * @param componentLikes
+     * @return
+     */
+    private String getAutoLoadComCode(List<CtClass> componentLikes) {
         StringBuilder autoLoadComCode = new StringBuilder()
-        for (CtClass ctClass : activators) {
+        for (CtClass ctClass : componentLikes) {
             autoLoadComCode.append("new " + ctClass.getName() + "()" + ".onCreate();")
         }
-
         return autoLoadComCode.toString()
     }
 
@@ -145,10 +165,10 @@ class CodeTransform extends Transform {
         return false
     }
 
-    private boolean isActivator(CtClass ctClass) {
+    private boolean isComponentLike(CtClass ctClass) {
         try {
             for (CtClass ctClassInter : ctClass.getInterfaces()) {
-                if ("com.luojilab.component.componentlib.applicationlike.IApplicationLike".equals(ctClassInter.name)) {
+                if (COMPONENT_LIKE.equals(ctClassInter.name)) {
                     return true
                 }
             }
