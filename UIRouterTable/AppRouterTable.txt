@@ -5,3 +5,7 @@ HOST : app
 主app页面
 /main
 
+第二个页面
+/second
+content:String
+

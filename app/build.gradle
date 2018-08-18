@@ -51,8 +51,8 @@ dependencies {
 
 
 
-    "$implementation" project(':router:router-core')
-    annotationProcessor project(':router:router-compiler')
+    "$implementation" project(':router-core')
+    annotationProcessor project(':router-compiler')
 }
 
 componentBuild {

@@ -1,8 +1,6 @@
 package com.example.code;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -56,8 +54,7 @@ public class FeatureListFragment extends BaseFragment<FragmentFeatureListBinding
 
     private void initData() {
         List<HolderData> list = new ArrayList<>();
-        list.add(new HolderData(Holder.Type.TO_FEATURE_A, "跳转到模块a"));
-        list.add(new HolderData(Holder.Type.TO_FEATURE_B, "跳转到模块b"));
+        list.add(new HolderData(Holder.Type.TO_FEATURE_ROUTER, "跳转到组件router"));
         binding.featureList.setAdapter(new Adapter(getContext(), list));
     }
 
@@ -95,10 +92,9 @@ public class FeatureListFragment extends BaseFragment<FragmentFeatureListBinding
 
     public static class Holder extends RecyclerView.ViewHolder {
 
-        @IntDef({Holder.Type.TO_FEATURE_A,Holder.Type.TO_FEATURE_B})
+        @IntDef({Holder.Type.TO_FEATURE_ROUTER})
         public @interface Type {
-            int TO_FEATURE_A = 0;
-            int TO_FEATURE_B = 1;
+            int TO_FEATURE_ROUTER = 0;
         }
 
         private TextView mTextView;
@@ -114,17 +110,10 @@ public class FeatureListFragment extends BaseFragment<FragmentFeatureListBinding
                 @Override
                 public void onClick(View v) {
                     switch (holderData.type) {
-                        case Holder.Type.TO_FEATURE_A: {
+                        case Holder.Type.TO_FEATURE_ROUTER: {
                             Bundle bundle = new Bundle();
                             bundle.putString("content", "this content to a from  app");
-                            UIRouter.getInstance().openUri(mTextView.getContext(), "HandsomeCodeAndroid://featurea/test", bundle);
-//                            KeepLiveDemoActivity.start(v.getContext());
-                            break;
-                        }
-                        case Holder.Type.TO_FEATURE_B: {
-                            Bundle bundle = new Bundle();
-                            bundle.putString("content", "tthis content to b from  app");
-                            UIRouter.getInstance().openUri(mTextView.getContext(), "HandsomeCodeAndroid://featurea/test", bundle);
+                            UIRouter.getInstance().openUri(mTextView.getContext(), "HandsomeCodeAndroid://featureRouter/test", bundle);
 //                            KeepLiveDemoActivity.start(v.getContext());
                             break;
                         }

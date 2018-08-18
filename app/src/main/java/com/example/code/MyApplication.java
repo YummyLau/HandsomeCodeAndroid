@@ -5,6 +5,7 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.effective.router.core.Router;
+import com.effective.router.core.ui.UIRouter;
 
 /**
  * Created by yummyLau on 2018/5/16.
@@ -22,8 +23,8 @@ public class MyApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        UIRouter.getInstance().registerUI("app");
         application = this;
-        Router.registerComponent("com.example.feature.a.TextComponentLike");
     }
 
     @Override

@@ -1,0 +1,6 @@
+<resources>
+    <string name="fr_app_name">featureRouter</string>
+
+    <string name="fr_finish_current_activity">解决当前页面</string>
+    <string name="fr_back_to_other_activity">跳转到app新页面</string>
+</resources>

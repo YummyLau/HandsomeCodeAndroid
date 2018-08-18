@@ -1,0 +1,5 @@
+<resources>
+
+    <!-- crash -->
+    <string name="crash_for_tip">程序异常退出</string>
+</resources>
