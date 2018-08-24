@@ -14,7 +14,7 @@ import android.view.View;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends ColorStatusBarActivity {
 
     protected View contentView;
 

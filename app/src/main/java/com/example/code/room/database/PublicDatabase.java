@@ -7,7 +7,9 @@ import com.example.code.room.Dao.UserDao;
 import com.example.code.room.table.UserEntity;
 
 /**
- * created by g8931 on 2018/5/3
+ * Created by yummyLau on 2018/7/16.
+ * Email: yummyl.lau@gmail.com
+ * blog: yummylau.com
  */
 @Database(entities = {
         UserEntity.class

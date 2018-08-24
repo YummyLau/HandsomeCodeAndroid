@@ -15,7 +15,7 @@ import android.view.View;
  * Email: yummyl.lau@gmail.com
  * blog: yummylau.com
  */
-public abstract class BaseBindingActivity<DataBinding extends ViewDataBinding> extends AppCompatActivity {
+public abstract class BaseBindingActivity<DataBinding extends ViewDataBinding> extends ColorStatusBarActivity {
 
     protected DataBinding binding;
     protected View contentView;

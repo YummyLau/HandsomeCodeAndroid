@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主题颜色 -->
+    <color name="colorPrimary">#1E2146</color>
+    <color name="colorPrimaryDark">#1E2146</color>
+    <color name="colorAccent">#FFFF4081</color>
+</resources>

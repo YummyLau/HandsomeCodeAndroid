@@ -20,7 +20,7 @@ import com.effective.android.base.fragment.BaseFragment;
  * blog: yummylau.com
  */
 
-public abstract class BaseFragmentActivity<DataBinding extends ViewDataBinding> extends AppCompatActivity {
+public abstract class BaseFragmentActivity<DataBinding extends ViewDataBinding> extends ColorStatusBarActivity {
 
     protected DataBinding binding;
     protected View contentView;

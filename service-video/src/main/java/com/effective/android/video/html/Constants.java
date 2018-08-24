@@ -2,7 +2,9 @@ package com.effective.android.video.html;
 
 /**
  * 变量
- * created by g8931 on 2018/6/26
+ * Created by yummyLau on 2018/7/16.
+ * Email: yummyl.lau@gmail.com
+ * blog: yummylau.com
  */
 public class Constants {
 
