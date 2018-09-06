@@ -21,7 +21,7 @@ public class SecondActivity extends BaseBindingActivity {
     @NonNull
     @Override
     public int getLayoutRes() {
-        return R.layout.activity_second;
+        return R.layout.app_activity_second;
     }
 
     @Override

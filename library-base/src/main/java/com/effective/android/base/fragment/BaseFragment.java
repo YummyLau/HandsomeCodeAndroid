@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.effective.android.base.activity.BaseBindingActivity;
 
+import skin.support.widget.SkinCompatSupportable;
+
 /**
  * onAttach
  * onCreate
@@ -42,7 +44,7 @@ import com.effective.android.base.activity.BaseBindingActivity;
  * blog: yummylau.com
  */
 
-public abstract class BaseFragment<DataBinding extends ViewDataBinding> extends Fragment {
+public abstract class BaseFragment<DataBinding extends ViewDataBinding> extends Fragment implements SkinCompatSupportable {
 
     protected DataBinding binding;
     protected BaseBindingActivity attachActivity;
@@ -57,6 +59,11 @@ public abstract class BaseFragment<DataBinding extends ViewDataBinding> extends 
     public void onDetach() {
         super.onDetach();
         attachActivity = null;
+    }
+
+    @Override
+    public void applySkin() {
+        //...
     }
 
     @LayoutRes

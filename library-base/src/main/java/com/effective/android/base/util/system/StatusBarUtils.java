@@ -390,4 +390,12 @@ public class StatusBarUtils {
         return !(DeviceUtils.isZUKZ1() || DeviceUtils.isZTKC2016());
     }
 
+
+    public static boolean meetLightColor(@ColorInt int color) {
+        return Color.alpha(color) >= 255 * 0.7
+                && Color.red(color) >= 255 * 0.7
+                && Color.green(color) >= 255 * 0.7
+                && Color.blue(color) >= 255 * 0.7;
+    }
+
 }

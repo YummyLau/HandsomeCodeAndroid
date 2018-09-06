@@ -12,7 +12,12 @@ public class MainActivity extends BaseBindingActivity {
     @NonNull
     @Override
     public int getLayoutRes() {
-        return R.layout.activity_main;
+        return R.layout.app_activity_main;
+    }
+
+    @Override
+    protected int getThemeColor() {
+        return R.color.app_colorPrimary;
     }
 
     @Override

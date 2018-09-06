@@ -3,9 +3,6 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion android_params.compile_sdk
 
-    dataBinding {
-        enabled = true
-    }
 
     defaultConfig {
         minSdkVersion android_params.min_sdkd
@@ -28,36 +25,12 @@ android {
         sourceCompatibility android_params.source_java
         targetCompatibility android_params.target_java
     }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    "$api" deps.support.v7
-    "$api" deps.support.design
-    "$api" deps.smartrefresh
-    "$api" (deps.vlayout){
-        transitive = true
-    }
 
-    //okhttp3
-    "$api" deps.net.okhttp3
-    "$api" deps.net.okhttp3_logger
-
-    //retrofit2
-    "$api" deps.net.retrofit2
-
-    //rx
-    "$api" deps.rx.rxjava
-    "$api" deps.rx.rxandroid
-    "$api" deps.rx.adapter_rxjava
-
-    //gson
-    "$api" deps.gson.gson
-    "$api" deps.gson.converter_gson
-
-    //debug
-    "$api" deps.debugTools.stetho
-    "$api" deps.debugTools.stetho_okhttp3
-
-    "$api" project(':library-skin')
+    "$api" deps.skin.support
+    "$api" deps.skin.design
 }

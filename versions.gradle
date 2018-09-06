@@ -29,6 +29,8 @@ versions.stetho_okhttp = "1.5.0"
 versions.vlayout = "1.2.8"
 versions.smartrefresh = "1.1.0-alpha-14"
 
+versions.skin = "2.2.3"
+
 
 
 def support = [:]
@@ -73,6 +75,12 @@ ext.deps.lifecycle = lifecycle
 def poet = [:]
 poet.java = "com.squareup:javapoet:1.7.0"
 ext.deps.poet = poet
+
+def skin = [:]
+skin.support = "skin.support:skin-support:$versions.skin"
+skin.design = "skin.support:skin-support-design:$versions.skin"
+skin.cardview = "skin.support:skin-support-cardview:$versions.skin"
+deps.skin = skin
 
 def spInjector = [:]
 spInjector.core = "com.effective.android:sp-core:$versions.sharedPreferenceInjector"

@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+def skinName = "black.skin"
+
+android {
+    compileSdkVersion android_params.compile_sdk
+    buildToolsVersion android_params.build_tools
+
+    defaultConfig {
+        minSdkVersion android_params.min_sdkd
+        targetSdkVersion android_params.target_sdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {res.srcDirs = [
+                'src/main/res',
+                'src/main/res-app']}}
+
+    applicationVariants.all { variant ->
+        //修改输出的APK路径
+        variant.getPackageApplication().outputDirectory = new File(project.rootDir.absolutePath + "/library-skin/src/main/assets/skins")
+        variant.getPackageApplication().outputScope.apkDatas.forEach { apkData ->
+            //修改输出APK的文件名
+            apkData.outputFileName = skinName
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}

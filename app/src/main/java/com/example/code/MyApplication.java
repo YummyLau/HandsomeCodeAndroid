@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.effective.android.skin.SkinHelper;
 import com.effective.router.core.Router;
 import com.effective.router.core.ui.UIRouter;
 
@@ -24,6 +25,7 @@ public class MyApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         UIRouter.getInstance().registerUI("app");
+        SkinHelper.getInstance().init(this);
         application = this;
     }
 

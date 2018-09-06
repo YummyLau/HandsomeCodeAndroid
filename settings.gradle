@@ -1,4 +1,4 @@
-include ':library-base'
+include ':library-base', ':library-skin', ':generate-skin-black', ':generate-skin-blue'
 include ':service-imageloader',':service-video',':service-jswebview'
 include ':router-annotation',':router-compiler',':router-core'
 include ':feature-router'
