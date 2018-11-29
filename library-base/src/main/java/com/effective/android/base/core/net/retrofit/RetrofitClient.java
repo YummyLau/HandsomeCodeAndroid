@@ -2,6 +2,7 @@ package com.effective.android.base.core.net.retrofit;
 
 
 import com.effective.android.base.core.net.okhttp.HttpClient;
+import com.effective.android.base.core.net.retrofit.api.DemoApi;
 import com.effective.android.base.core.net.retrofit.coverts.ToByteConvertFactory;
 import com.effective.android.base.core.net.retrofit.coverts.ToStringConverterFactory;
 
@@ -33,6 +34,7 @@ public class RetrofitClient {
         }
         return sClient;
     }
+
 
     public <T> T getService(Class<T> tClass) {
         return getRetrofit(RetrofitType.GSON).create(tClass);

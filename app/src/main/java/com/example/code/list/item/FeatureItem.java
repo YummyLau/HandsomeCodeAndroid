@@ -5,10 +5,10 @@ import com.example.code.anno.ItemType;
 public class FeatureItem {
     @ItemType
     public int type;
-    public String text;
+    public CharSequence text;
 
-    public FeatureItem(int type, String text) {
+    public FeatureItem(int type, CharSequence charSequence) {
         this.type = type;
-        this.text = text;
+        this.text = charSequence;
     }
 }

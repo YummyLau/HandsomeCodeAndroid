@@ -1,18 +1,23 @@
 package com.effective.android.jswebview.tbs;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.tencent.smtt.export.external.TbsCoreSettings;
+import com.tencent.smtt.export.external.extension.interfaces.IX5WebViewExtension;
 import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.TbsListener;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 
+import java.net.URL;
 import java.util.HashMap;
 
 /**
@@ -21,6 +26,7 @@ import java.util.HashMap;
  * blog: yummylau.com
  */
 public class X5WebUtils {
+    private static final String TAG = "X5WebUtils";
 
     public static boolean hookKeyCode(WebView webView, int keyCode) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -44,10 +50,10 @@ public class X5WebUtils {
             webView.getSettings().setJavaScriptEnabled(false);
 
             webView.clearHistory();
-//            webView.clearCache(true);
-            webView.loadUrl("about:blank"); // clearView() should be changed to loadUrl("about:blank"), since clearView() is deprecated now
+            webView.clearCache(true);
+//            webView.loadUrl("about:blank"); // clearView() should be changed to loadUrl("about:blank"), since clearView() is deprecated now
             webView.freeMemory();
-            webView.pauseTimers();
+//            webView.pauseTimers();
             webView.removeAllViews();
             webView.destroy();
         }
@@ -78,19 +84,21 @@ public class X5WebUtils {
         settings.setSaveFormData(false);
         settings.setGeolocationEnabled(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
-        webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-
+        IX5WebViewExtension webViewExtension = webView.getX5WebViewExtension();
+        if (webViewExtension != null) {
+            webViewExtension.setScrollBarFadingEnabled(false);
+        }
         /**
          * 设置webview缓存
          */
-        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
         /**
          * 存储一些简单的key/value数据，Session Storage（页面关闭就消失） 和 Local Storage（本地存储，永不过期）
          */
-        settings.setDomStorageEnabled(false);
+        settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(false);
-//        settings.setDatabasePath();
+        settings.setDatabasePath(GLStorage.webView(webView.getContext()));
 
 
         /**
@@ -98,7 +106,7 @@ public class X5WebUtils {
          * webkie使用一个db文件保存appcache缓存的数据
          */
         settings.setAppCacheEnabled(false);
-//        settings.setAppCachePath();
+        settings.setAppCachePath(GLStorage.webView(webView.getContext()));
 //        settings.setAppCacheMaxSize();
 
         /**
@@ -109,6 +117,31 @@ public class X5WebUtils {
         } else {
             settings.setLoadsImagesAutomatically(false);
         }
+
+        setGodLikeUA(webView);
+    }
+
+    public static void setGodLikeUA(WebView webView){
+        if(webView == null){
+            return;
+        }
+        if(webView.getSettings() == null){
+            return;
+        }
+        String ua = webView.getSettings().getUserAgentString();
+        String version = getAppVersionName(webView.getContext(), webView.getContext().getPackageName());
+        ua = ua + " Godlike/" + version;
+        webView.getSettings().setUserAgentString(ua);
+    }
+
+    public static String getAppVersionName(Context context, String packageName) {
+        try {
+            PackageInfo info = context.getPackageManager().getPackageInfo(packageName, 0);
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void clearWebviewCache(WebView webView) {
@@ -160,5 +193,33 @@ public class X5WebUtils {
                 Log.d("X5init", "onViewInitFinished : " + b);
             }
         });
+    }
+
+    /**
+     * 1、WebView:postUrl()前检测url的合法性
+     * 2、Js调用Native方法前检测当前界面url的合法性
+     *
+     * @param url
+     * @return
+     */
+    public static boolean isTrustUrl(String url) {
+        if (!TextUtils.isEmpty(url)) {
+            try {
+                URL realUrl = new URL(url);
+                if (!TextUtils.isEmpty(realUrl.getHost())
+                        && (realUrl.getHost().endsWith(".163.com")
+                        || realUrl.getHost().endsWith(".netease.com") || realUrl.getHost().endsWith(".16163.com"))) {
+                    return true;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isTrustUrl(X5JsWebView webView) {
+        String url = webView != null ? webView.getUrl() : null;
+        return isTrustUrl(url);
     }
 }

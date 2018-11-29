@@ -3,15 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!--<com.effective.android.base.view.textview.StaticLayoutView-->
+        <!--android:id="@+id/text"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:padding="10dp"-->
+        <!--android:background="@drawable/app_sh_feature_holder_text" />-->
+
     <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/app_sh_feature_holder_text"
-        android:gravity="center"
-        android:padding="10dp"
-        android:textColor="@color/app_feature_item_color"
-        android:textSize="20sp" />
+    android:id="@+id/text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/app_sh_feature_holder_text"
+    android:gravity="center"
+    android:padding="10dp"
+    android:textColor="@color/app_feature_item_color"
+    android:textSize="20sp" />
 
 </RelativeLayout>

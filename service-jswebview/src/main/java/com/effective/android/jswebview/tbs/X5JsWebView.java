@@ -1,17 +1,12 @@
 package com.effective.android.jswebview.tbs;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.AttributeSet;
-import android.util.Log;
 
-import com.effective.android.jswebview.interfaces.OnFinishCallback;
 import com.effective.android.jswebview.interfaces.OnScrollChangeCallback;
 import com.effective.android.jswebview.jsbridge.BridgeWebView;
 import com.effective.android.jswebview.jsbridge.BridgeWebViewClient;
-import com.tencent.smtt.sdk.WebChromeClient;
-import com.tencent.smtt.sdk.WebView;
-
+import com.tencent.smtt.sdk.WebViewClient;
 
 /**
  * 1. addJavascriptInterface 4.2以下存在漏洞
@@ -28,11 +23,7 @@ import com.tencent.smtt.sdk.WebView;
 public final class X5JsWebView extends BridgeWebView {
 
     private OnScrollChangeCallback mOnScrollChangedCallback;
-    private OnFinishCallback mOnFinishCallback;
-    private boolean isError;
-    private boolean start;
-    private X5JsWebViewClient x5JsWebViewClient;
-    private String currentUrl;
+    private BridgeWebViewClient bridgeWebViewClient;
 
     public X5JsWebView(Context context) {
         super(context);
@@ -48,58 +39,20 @@ public final class X5JsWebView extends BridgeWebView {
 
     @Override
     protected BridgeWebViewClient generateBridgeWebViewClient() {
-        if (x5JsWebViewClient == null) {
-            x5JsWebViewClient = new X5JsWebViewClient(this) {
-
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    Log.d("x5JsWebViewClient", "shouldOverrideUrlLoading");
-                    start = false;
-                    currentUrl = url;
-                    return super.shouldOverrideUrlLoading(view, url);
-                }
-
-                @Override
-                public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                    Log.d("x5JsWebViewClient", "shouldOverrideUrlLoading");
-                    start = true;
-                    currentUrl = url;
-                    super.onPageStarted(view, url, favicon);
-                }
-
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    Log.d("x5JsWebViewClient", "onPageFinished");
-                    if (start) {
-                        if (isError) {
-                            isError = false;
-                            if (mOnFinishCallback != null) {
-                                mOnFinishCallback.onFail(url);
-                            }
-                        } else {
-                            isError = false;
-                            if (mOnFinishCallback != null) {
-                                mOnFinishCallback.onSuccess(url);
-                            }
-                        }
-                        start = false;
-                        if (!getSettings().getLoadsImagesAutomatically()) {
-                            getSettings().setLoadsImagesAutomatically(true);
-                        }
-                    }
-                    super.onPageFinished(view, url);
-                }
-
-                @Override
-                public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                    Log.d("x5JsWebViewClient", "onReceivedError");
-                    isError = true;
-                    super.onReceivedError(view, errorCode, description, failingUrl);
-
-                }
-            };
+        if (bridgeWebViewClient == null) {
+            bridgeWebViewClient = new BridgeWebViewClient(this);
         }
-        return x5JsWebViewClient;
+        return bridgeWebViewClient;
+    }
+
+    public void setWebViewClientProxy(WebViewClient webViewClient) {
+        generateBridgeWebViewClient().setProxy(webViewClient);
+    }
+
+    @Deprecated
+    @Override
+    public void setWebViewClient(WebViewClient webViewClient) {
+        super.setWebViewClient(webViewClient);
     }
 
     public void setOnScrollChangedCallback(
@@ -108,7 +61,7 @@ public final class X5JsWebView extends BridgeWebView {
     }
 
     public void setOnFinishCallback(OnFinishCallback mOnFinishCallback) {
-        this.mOnFinishCallback = mOnFinishCallback;
+        generateBridgeWebViewClient().setOnFinishCallback(mOnFinishCallback);
     }
 
     @Override
@@ -120,15 +73,11 @@ public final class X5JsWebView extends BridgeWebView {
     }
 
     @Override
-    public void setWebChromeClient(WebChromeClient client) {
-        super.setWebChromeClient(new X5WebChromeClient(client) {
-
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                Log.d("X5WebChromeClient", "progress : " + newProgress);
-                super.onProgressChanged(view, newProgress);
-            }
-        });
+    public void postUrl(String s, byte[] bytes) {
+        if (X5WebUtils.isTrustUrl(s)) {
+            super.postUrl(s, bytes);
+        } else {
+            super.postUrl(s, null);
+        }
     }
-
 }

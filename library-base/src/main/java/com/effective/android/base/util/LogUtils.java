@@ -1,5 +1,6 @@
 package com.effective.android.base.util;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 /**
@@ -25,6 +26,12 @@ public class LogUtils {
     public static final void v(String tag, String msg, Throwable thr) {
         if (sDebug) {
             Log.v(tag, msg, thr);
+        }
+    }
+
+    public static final void d(@NonNull Class c, String msg) {
+        if (sDebug) {
+            Log.d(c.getSimpleName(), msg);
         }
     }
 
